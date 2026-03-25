@@ -7,12 +7,13 @@ import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
 import { SearchHistory } from "@/components/SearchHistory";
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
+import { AnalystSummary } from "@/components/AnalystSummary";
 import { useSearch } from "@/hooks/useSearch";
 import { useApiKey } from "@/hooks/useApiKey";
 
 const Index = () => {
   const [query, setQuery] = useState("");
-  const { results, loading, search, history, loadHistory } = useSearch();
+  const { results, loading, search, history, loadHistory, summary, summaryLoading } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
 
   useEffect(() => {
@@ -86,6 +87,7 @@ const Index = () => {
         {/* Results */}
         {results && !loading && (
           <div className="space-y-6">
+            <AnalystSummary summary={summary} loading={summaryLoading} />
             <TrendsChart data={results.trends} query={query} />
 
             <div className="grid gap-6 lg:grid-cols-2">

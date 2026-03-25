@@ -37,18 +37,42 @@ export interface SearchHistory {
 export function useSearch() {
   const [results, setResults] = useState<SearchResults | null>(null);
   const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
   const [history, setHistory] = useState<SearchHistory[]>([]);
   const { toast } = useToast();
 
   const search = async (query: string, apiKey?: string) => {
     setLoading(true);
+    setSummary(null);
     try {
       const { data, error } = await supabase.functions.invoke("search", {
         body: { query, apiKey },
       });
       if (error) throw error;
-      setResults(data as SearchResults);
+      const searchResults = data as SearchResults;
+      setResults(searchResults);
       await loadHistory();
+
+      // Kick off AI summary in background
+      setSummaryLoading(true);
+      supabase.functions
+        .invoke("analyze", {
+          body: {
+            query,
+            google: searchResults.google,
+            trends: searchResults.trends,
+            linkedin: searchResults.linkedin,
+          },
+        })
+        .then(({ data: analyzeData, error: analyzeError }) => {
+          if (analyzeError) {
+            console.error("Analyze error:", analyzeError);
+          } else {
+            setSummary(analyzeData?.summary || null);
+          }
+        })
+        .finally(() => setSummaryLoading(false));
     } catch (err: any) {
       toast({
         title: "Search failed",
@@ -69,5 +93,5 @@ export function useSearch() {
     if (data) setHistory(data);
   };
 
-  return { results, loading, search, history, loadHistory };
+  return { results, loading, search, history, loadHistory, summary, summaryLoading };
 }
