@@ -72,7 +72,7 @@ const Index = () => {
         </form>
 
         {/* Search History (shown before results) */}
-        {!results && <SearchHistory history={history} onSelect={handleHistorySelect} />}
+        {!results && hasApiKey && <SearchHistory history={history} onSelect={handleHistorySelect} />}
 
         {/* Loading state */}
         {loading && (
