@@ -46,18 +46,18 @@ const Index = () => {
 
       <main className="max-w-5xl mx-auto px-4 py-8 space-y-6 flex-1 w-full">
         {/* Search Form */}
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-3 max-w-2xl mx-auto w-full">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="What do you want to learn about?"
-              className="pl-10 h-12 text-base bg-card border-border/50"
+              className="pl-12 h-14 text-lg bg-card border-border/50"
             />
           </div>
-          <Button type="submit" disabled={loading || !query.trim()} className="h-12 px-6">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Search"}
+          <Button type="submit" disabled={loading || !query.trim()} className="h-14 px-8 text-base">
+            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Search"}
           </Button>
         </form>
 
