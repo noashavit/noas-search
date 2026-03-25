@@ -41,7 +41,7 @@ serve(async (req) => {
 
       // LinkedIn posts by the person
       fetch(
-        `https://serpapi.com/search.json?q=site:linkedin.com/posts+${encodeURIComponent(query)}&gl=us&hl=en&num=10&api_key=${serpApiKey}`
+        `https://serpapi.com/search.json?q=site:linkedin.com/posts+${encodeURIComponent(query)}&gl=us&hl=en&num=10&tbs=sbd:1,qdr:y&api_key=${serpApiKey}`
       ).then((r) => r.json()),
     ]);
 
