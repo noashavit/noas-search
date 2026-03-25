@@ -34,7 +34,7 @@ Google Trends (monthly interest values): ${JSON.stringify(trends?.slice(-6)?.map
 
 LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`;
 
-    const response = await fetch("https://ai-gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
