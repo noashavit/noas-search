@@ -40,11 +40,11 @@ export function useSearch() {
   const [history, setHistory] = useState<SearchHistory[]>([]);
   const { toast } = useToast();
 
-  const search = async (query: string) => {
+  const search = async (query: string, apiKey?: string) => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("search", {
-        body: { query },
+        body: { query, apiKey },
       });
       if (error) throw error;
       setResults(data as SearchResults);
