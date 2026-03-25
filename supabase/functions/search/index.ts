@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { query } = await req.json();
+    const { query, apiKey } = await req.json();
     if (!query) {
       return new Response(JSON.stringify({ error: "Query is required" }), {
         status: 400,
@@ -21,9 +21,10 @@ serve(async (req) => {
       });
     }
 
-    const serpApiKey = Deno.env.get("SERPAPI_KEY");
+    // Use client-provided API key, fall back to server secret
+    const serpApiKey = apiKey || Deno.env.get("SERPAPI_KEY");
     if (!serpApiKey) {
-      throw new Error("SERPAPI_KEY is not configured");
+      throw new Error("No SerpAPI key provided");
     }
 
     // Fetch all three in parallel
