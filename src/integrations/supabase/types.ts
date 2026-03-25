@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      searches: {
+        Row: {
+          created_at: string | null
+          id: string
+          linkedin_posts: Json | null
+          query: string
+          results: Json | null
+          search_type: string
+          trends_data: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          linkedin_posts?: Json | null
+          query: string
+          results?: Json | null
+          search_type?: string
+          trends_data?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          linkedin_posts?: Json | null
+          query?: string
+          results?: Json | null
+          search_type?: string
+          trends_data?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
