@@ -44,58 +44,73 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-6 flex-1 w-full">
-        {/* Search Form */}
-        <form onSubmit={handleSubmit} className="flex gap-3 max-w-2xl mx-auto w-full">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="What do you want to learn about?"
-              className="pl-12 h-14 text-lg bg-card border-border/50"
-            />
-          </div>
-          <Button type="submit" disabled={loading || !query.trim()} className="h-14 px-8 text-base">
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Search"}
-          </Button>
-        </form>
+      <main className="max-w-5xl mx-auto px-4 flex-1 w-full flex flex-col">
+        {/* Hero / Search Section (no results yet) */}
+        {!results && !loading && (
+          <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">
+              Search Insights
+            </h2>
 
-        {/* Loading state */}
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground text-sm">
-              Fetching results, trends & LinkedIn posts…
+            <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl w-full">
+              <div className="relative flex-1">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="What do you want to learn about?"
+                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                />
+              </div>
+              <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
+                Search
+              </Button>
+            </form>
+
+            <p className="text-sm text-muted-foreground max-w-lg text-center">
+              Get the top 10 Google results, search trends, and the most recent LinkedIn posts — all in one place.
             </p>
           </div>
         )}
 
-        {/* Results */}
-        {results && !loading && (
-          <div className="space-y-6">
-            <AnalystSummary summary={summary} loading={summaryLoading} />
-            <TrendsChart data={results.trends} query={query} />
+        {/* Search bar + results/loading */}
+        {(results || loading) && (
+          <div className="py-8 space-y-6">
+            <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl mx-auto w-full">
+              <div className="relative flex-1">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="What do you want to learn about?"
+                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                />
+              </div>
+              <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Search"}
+              </Button>
+            </form>
 
-            <div className="grid gap-6 lg:grid-cols-2">
-              <GoogleResults results={results.google} />
-              <LinkedInPosts posts={results.linkedin} query={query} />
-            </div>
-          </div>
-        )}
+            {loading && (
+              <div className="flex flex-col items-center justify-center py-20 gap-3">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground text-sm">
+                  Fetching results, trends & LinkedIn posts…
+                </p>
+              </div>
+            )}
 
-        {/* Empty state */}
-        {!results && !loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
-            <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
-              <Search className="h-7 w-7 text-muted-foreground" />
-            </div>
-            <div>
-              <p className="font-medium text-foreground">Search anything</p>
-              <p className="text-sm text-muted-foreground mt-1 max-w-md">
-                Get the top 10 Google results, search trends, and the most recent LinkedIn posts — all in one place.
-              </p>
-            </div>
+            {results && !loading && (
+              <div className="space-y-6">
+                <AnalystSummary summary={summary} loading={summaryLoading} />
+                <TrendsChart data={results.trends} query={query} />
+
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <GoogleResults results={results.google} />
+                  <LinkedInPosts posts={results.linkedin} query={query} />
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>
