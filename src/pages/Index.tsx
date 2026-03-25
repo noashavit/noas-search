@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search, Loader2, Sparkles, KeyRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
-import { SearchHistory } from "@/components/SearchHistory";
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
 import { AnalystSummary } from "@/components/AnalystSummary";
 import { useSearch } from "@/hooks/useSearch";
@@ -13,25 +12,16 @@ import { useApiKey } from "@/hooks/useApiKey";
 
 const Index = () => {
   const [query, setQuery] = useState("");
-  const { results, loading, search, history, loadHistory, summary, summaryLoading } = useSearch();
+  const { results, loading, search, summary, summaryLoading } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
-
-  useEffect(() => {
-    loadHistory();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) search(query.trim(), apiKey);
   };
 
-  const handleHistorySelect = (q: string) => {
-    setQuery(q);
-    search(q, apiKey);
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <ApiKeyDialog open={!hasApiKey} onSubmit={setApiKey} />
 
       {/* Header */}
@@ -54,7 +44,7 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 py-8 space-y-6 flex-1 w-full">
         {/* Search Form */}
         <form onSubmit={handleSubmit} className="flex gap-2">
           <div className="relative flex-1">
@@ -62,7 +52,7 @@ const Index = () => {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Enter a name or keyword…"
+              placeholder="What do you want to learn about?"
               className="pl-10 h-12 text-base bg-card border-border/50"
             />
           </div>
@@ -70,9 +60,6 @@ const Index = () => {
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Search"}
           </Button>
         </form>
-
-        {/* Search History (shown before results) */}
-        {!results && hasApiKey && <SearchHistory history={history} onSelect={handleHistorySelect} />}
 
         {/* Loading state */}
         {loading && (
@@ -94,27 +81,39 @@ const Index = () => {
               <GoogleResults results={results.google} />
               <LinkedInPosts posts={results.linkedin} query={query} />
             </div>
-
-            {/* History below results */}
-            <SearchHistory history={history} onSelect={handleHistorySelect} />
           </div>
         )}
 
         {/* Empty state */}
-        {!results && !loading && history.length === 0 && (
+        {!results && !loading && (
           <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
             <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
               <Search className="h-7 w-7 text-muted-foreground" />
             </div>
             <div>
               <p className="font-medium text-foreground">Search anything</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Get top 10 Google results, Google Trends, and LinkedIn posts
+              <p className="text-sm text-muted-foreground mt-1 max-w-md">
+                Get the top 10 Google results, search trends, and the most recent LinkedIn posts — all in one place.
               </p>
             </div>
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border/50 bg-card/50 backdrop-blur-sm mt-auto">
+        <div className="max-w-5xl mx-auto px-4 py-4 text-center text-sm text-muted-foreground">
+          Made with ❤️ by{" "}
+          <a
+            href="https://www.linkedin.com/in/noashavit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-primary hover:underline"
+          >
+            Noa Shavit
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
