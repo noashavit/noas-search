@@ -67,8 +67,9 @@ const Index = () => {
               </Button>
             </form>
 
-            <p className="text-sm text-muted-foreground max-w-lg text-center">
-              Get the top 10 Google results, search trends, and the most recent LinkedIn posts — all in one place.
+            <p className="text-sm text-muted-foreground max-w-lg text-center whitespace-pre-line">
+              Get a high-level analysis and detailed information about any person or topic.{"\n\n"}
+              Get the top 10 search results, the 10 most recent LinkedIn posts, see search trends and more, all in one place.
             </p>
           </div>
         )}
