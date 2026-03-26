@@ -20,6 +20,7 @@ export interface LinkedInPost {
   link: string;
   snippet: string;
   displayed_link?: string;
+  date?: string;
 }
 
 export interface SearchResults {
