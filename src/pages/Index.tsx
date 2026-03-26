@@ -28,7 +28,7 @@ const Index = () => {
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
           <Sparkles className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-bold tracking-tight">{"\n"}</h1>
+          <h1 className="text-xl font-bold tracking-tight">Search Insights</h1>
           <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full font-mono">
             US
           </span>
@@ -48,8 +48,10 @@ const Index = () => {
         {/* Hero / Search Section (no results yet) */}
         {!results && !loading && (
           <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12">
-            <p className="text-sm text-muted-foreground w-full text-center whitespace-pre-line">
-              Get a high-level analysis and detailed information about any person or topic.{"\n\n"}
+            <p className="text-base text-foreground w-full text-center font-medium">
+              Get a high-level analysis and detailed information about any person or topic.
+            </p>
+            <p className="text-sm text-muted-foreground w-full text-center">
               Get the top 10 search results, the 10 most recent LinkedIn posts, see search trends and more, all in one place.
             </p>
 
