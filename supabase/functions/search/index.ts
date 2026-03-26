@@ -27,28 +27,40 @@ serve(async (req) => {
       throw new Error("No SerpAPI key provided");
     }
 
-    // Fetch all three in parallel
-    const [googleResults, trendsData, linkedinResults] = await Promise.all([
-      // Google Search - top 10 US results
+    // Fetch Google + Trends in parallel, then LinkedIn with recency fallback
+    const [googleResults, trendsData] = await Promise.all([
       fetch(
         `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&gl=us&hl=en&num=10&api_key=${serpApiKey}`
       ).then((r) => r.json()),
 
-      // Google Trends - past 12 months US
       fetch(
         `https://serpapi.com/search.json?engine=google_trends&q=${encodeURIComponent(query)}&geo=US&date=today+12-m&api_key=${serpApiKey}`
       ).then((r) => r.json()),
-
-      // LinkedIn posts by the person
-      fetch(
-        `https://serpapi.com/search.json?q=site:linkedin.com/posts+${encodeURIComponent(query)}&gl=us&hl=en&num=10&tbs=sbd:1,qdr:y&api_key=${serpApiKey}`
-      ).then((r) => r.json()),
     ]);
+
+    // LinkedIn: try past week first, then month, then quarter, then year
+    const timeRanges = ["qdr:w", "qdr:m", "qdr:y"];
+    let linkedinPosts: any[] = [];
+
+    for (const range of timeRanges) {
+      const res = await fetch(
+        `https://serpapi.com/search.json?q=site:linkedin.com/posts+${encodeURIComponent(query)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
+      ).then((r) => r.json());
+
+      const posts = res.organic_results || [];
+      if (posts.length > 0) {
+        linkedinPosts = posts;
+        break;
+      }
+    }
 
     const results = {
       google: googleResults.organic_results || [],
       trends: trendsData.interest_over_time?.timeline_data || [],
-      linkedin: linkedinResults.organic_results || [],
+      linkedin: linkedinPosts.map((p: any) => ({
+        ...p,
+        date: p.date || p.rich_snippet?.top?.extensions?.[0] || null,
+      })),
     };
 
     // Save to database
