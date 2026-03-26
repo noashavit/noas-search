@@ -48,6 +48,11 @@ const Index = () => {
         {/* Hero / Search Section (no results yet) */}
         {!results && !loading && (
           <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12">
+            <p className="text-sm text-muted-foreground w-full text-center whitespace-pre-line">
+              Get a high-level analysis and detailed information about any person or topic.{"\n\n"}
+              Get the top 10 search results, the 10 most recent LinkedIn posts, see search trends and more, all in one place.
+            </p>
+
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Search Insights
             </h2>
@@ -66,11 +71,6 @@ const Index = () => {
                 Search
               </Button>
             </form>
-
-            <p className="text-sm text-muted-foreground max-w-lg text-center whitespace-pre-line">
-              Get a high-level analysis and detailed information about any person or topic.{"\n\n"}
-              Get the top 10 search results, the 10 most recent LinkedIn posts, see search trends and more, all in one place.
-            </p>
           </div>
         )}
 
