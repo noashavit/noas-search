@@ -165,7 +165,7 @@ const Index = () => {
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
-                  <LinkedInPosts posts={results.linkedin} query={query} />
+                  <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
                 </div>
               </div>
             )}
