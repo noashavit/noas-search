@@ -54,7 +54,6 @@ serve(async (req) => {
 
       const res = await fetch(
         `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
-        `https://serpapi.com/search.json?q=${linkedinQuery}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
       // Filter to only actual post URLs (not profiles)
