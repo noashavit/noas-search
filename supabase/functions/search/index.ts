@@ -56,18 +56,22 @@ serve(async (req) => {
         `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
-      // Filter to only actual post URLs (not profiles)
-      const filteredPosts = posts.filter((p: any) =>
-        p.link && p.link.includes("linkedin.com/posts/")
-      );
-      if (filteredPosts.length > 0) {
-        linkedinPosts = filteredPosts;
-        break;
-      }
-      // If person search got no posts but had profile results, keep trying broader range
-      if (searchType !== "person" && posts.length > 0) {
-        linkedinPosts = posts;
-        break;
+      const posts = res.organic_results || [];
+
+      if (searchType === "person") {
+        // Filter to only actual post URLs (not profiles)
+        const filteredPosts = posts.filter((p: any) =>
+          p.link && p.link.includes("linkedin.com/posts/")
+        );
+        if (filteredPosts.length > 0) {
+          linkedinPosts = filteredPosts;
+          break;
+        }
+      } else {
+        if (posts.length > 0) {
+          linkedinPosts = posts;
+          break;
+        }
       }
     }
 
