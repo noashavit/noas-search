@@ -15,8 +15,15 @@ type SearchType = "topic" | "person";
 const Index = () => {
   const [query, setQuery] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("topic");
-  const { results, loading, search, summary, summaryLoading } = useSearch();
+  const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
+
+  const handleToggleSearchType = (type: SearchType) => {
+    if (type !== searchType) {
+      setSearchType(type);
+      clearResults();
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
