@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Loader2, Sparkles, KeyRound } from "lucide-react";
+import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
@@ -10,14 +10,17 @@ import { AnalystSummary } from "@/components/AnalystSummary";
 import { useSearch } from "@/hooks/useSearch";
 import { useApiKey } from "@/hooks/useApiKey";
 
+type SearchType = "topic" | "person";
+
 const Index = () => {
   const [query, setQuery] = useState("");
+  const [searchType, setSearchType] = useState<SearchType>("topic");
   const { results, loading, search, summary, summaryLoading } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) search(query.trim(), apiKey);
+    if (query.trim()) search(query.trim(), apiKey, searchType);
   };
 
   return (
