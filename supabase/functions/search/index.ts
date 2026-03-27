@@ -82,6 +82,7 @@ serve(async (req) => {
       results: results.google,
       trends_data: results.trends,
       linkedin_posts: results.linkedin,
+      search_type: searchType,
     });
 
     return new Response(JSON.stringify(results), {
