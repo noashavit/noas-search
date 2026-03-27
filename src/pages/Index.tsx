@@ -15,8 +15,15 @@ type SearchType = "topic" | "person";
 const Index = () => {
   const [query, setQuery] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("topic");
-  const { results, loading, search, summary, summaryLoading } = useSearch();
+  const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
+
+  const handleToggleSearchType = (type: SearchType) => {
+    if (type !== searchType) {
+      setSearchType(type);
+      clearResults();
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +72,7 @@ const Index = () => {
             {/* Search Type Toggle */}
             <div className="flex items-center gap-2 w-full max-w-3xl">
               <button
-                onClick={() => setSearchType("topic")}
+                onClick={() => handleToggleSearchType("topic")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   searchType === "topic"
                     ? "bg-primary text-primary-foreground"
@@ -76,7 +83,7 @@ const Index = () => {
                 Topic
               </button>
               <button
-                onClick={() => setSearchType("person")}
+                onClick={() => handleToggleSearchType("person")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   searchType === "person"
                     ? "bg-primary text-primary-foreground"
@@ -111,7 +118,7 @@ const Index = () => {
             {/* Search Type Toggle */}
             <div className="flex items-center gap-2 max-w-3xl mx-auto w-full">
               <button
-                onClick={() => setSearchType("topic")}
+                onClick={() => handleToggleSearchType("topic")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   searchType === "topic"
                     ? "bg-primary text-primary-foreground"
@@ -122,7 +129,7 @@ const Index = () => {
                 Topic
               </button>
               <button
-                onClick={() => setSearchType("person")}
+                onClick={() => handleToggleSearchType("person")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   searchType === "person"
                     ? "bg-primary text-primary-foreground"

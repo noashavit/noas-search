@@ -45,19 +45,28 @@ serve(async (req) => {
     for (const range of timeRanges) {
       let linkedinQuery: string;
       if (searchType === "person") {
-        // For person search: find posts authored by them on their LinkedIn profile
-        linkedinQuery = `site:linkedin.com/in/${encodeURIComponent(query)} OR site:linkedin.com/posts/${encodeURIComponent(query)}`;
+        // For person search: find posts authored by that person (not profiles)
+        linkedinQuery = `site:linkedin.com/posts "${query}"`;
       } else {
         // For topic search: find LinkedIn posts mentioning the topic
-        linkedinQuery = `site:linkedin.com/posts+${encodeURIComponent(query)}`;
+        linkedinQuery = `site:linkedin.com/posts ${query}`;
       }
 
       const res = await fetch(
+        `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
         `https://serpapi.com/search.json?q=${linkedinQuery}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
-      const posts = res.organic_results || [];
-      if (posts.length > 0) {
+      // Filter to only actual post URLs (not profiles)
+      const filteredPosts = posts.filter((p: any) =>
+        p.link && p.link.includes("linkedin.com/posts/")
+      );
+      if (filteredPosts.length > 0) {
+        linkedinPosts = filteredPosts;
+        break;
+      }
+      // If person search got no posts but had profile results, keep trying broader range
+      if (searchType !== "person" && posts.length > 0) {
         linkedinPosts = posts;
         break;
       }
