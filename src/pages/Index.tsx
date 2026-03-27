@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Loader2, Sparkles, KeyRound } from "lucide-react";
+import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
@@ -10,14 +10,17 @@ import { AnalystSummary } from "@/components/AnalystSummary";
 import { useSearch } from "@/hooks/useSearch";
 import { useApiKey } from "@/hooks/useApiKey";
 
+type SearchType = "topic" | "person";
+
 const Index = () => {
   const [query, setQuery] = useState("");
+  const [searchType, setSearchType] = useState<SearchType>("topic");
   const { results, loading, search, summary, summaryLoading } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) search(query.trim(), apiKey);
+    if (query.trim()) search(query.trim(), apiKey, searchType);
   };
 
   return (
@@ -59,13 +62,39 @@ const Index = () => {
               Search Insights
             </h2>
 
+            {/* Search Type Toggle */}
+            <div className="flex items-center gap-2 w-full max-w-3xl">
+              <button
+                onClick={() => setSearchType("topic")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  searchType === "topic"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                <BookOpen className="h-4 w-4" />
+                Topic
+              </button>
+              <button
+                onClick={() => setSearchType("person")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  searchType === "person"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                <User className="h-4 w-4" />
+                Person
+              </button>
+            </div>
+
             <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl w-full">
               <div className="relative flex-1">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="What do you want to learn about?"
+                  placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
                   className="pl-14 h-16 text-xl bg-card border-border/50"
                 />
               </div>
@@ -79,13 +108,39 @@ const Index = () => {
         {/* Search bar + results/loading */}
         {(results || loading) && (
           <div className="py-8 space-y-6">
+            {/* Search Type Toggle */}
+            <div className="flex items-center gap-2 max-w-3xl mx-auto w-full">
+              <button
+                onClick={() => setSearchType("topic")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  searchType === "topic"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                <BookOpen className="h-4 w-4" />
+                Topic
+              </button>
+              <button
+                onClick={() => setSearchType("person")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  searchType === "person"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                <User className="h-4 w-4" />
+                Person
+              </button>
+            </div>
+
             <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl mx-auto w-full">
               <div className="relative flex-1">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="What do you want to learn about?"
+                  placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
                   className="pl-14 h-16 text-xl bg-card border-border/50"
                 />
               </div>
@@ -110,7 +165,7 @@ const Index = () => {
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
-                  <LinkedInPosts posts={results.linkedin} query={query} />
+                  <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
                 </div>
               </div>
             )}
