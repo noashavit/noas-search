@@ -94,5 +94,10 @@ export function useSearch() {
     if (data) setHistory(data);
   };
 
-  return { results, loading, search, history, loadHistory, summary, summaryLoading };
+  const clearResults = () => {
+    setResults(null);
+    setSummary(null);
+  };
+
+  return { results, loading, search, history, loadHistory, summary, summaryLoading, clearResults };
 }
