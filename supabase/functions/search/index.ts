@@ -45,14 +45,15 @@ serve(async (req) => {
     for (const range of timeRanges) {
       let linkedinQuery: string;
       if (searchType === "person") {
-        // For person search: find posts authored by them on their LinkedIn profile
-        linkedinQuery = `site:linkedin.com/in/${encodeURIComponent(query)} OR site:linkedin.com/posts/${encodeURIComponent(query)}`;
+        // For person search: find posts authored by that person (not profiles)
+        linkedinQuery = `site:linkedin.com/posts "${query}"`;
       } else {
         // For topic search: find LinkedIn posts mentioning the topic
-        linkedinQuery = `site:linkedin.com/posts+${encodeURIComponent(query)}`;
+        linkedinQuery = `site:linkedin.com/posts ${query}`;
       }
 
       const res = await fetch(
+        `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
         `https://serpapi.com/search.json?q=${linkedinQuery}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
