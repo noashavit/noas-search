@@ -6,6 +6,7 @@ import type { LinkedInPost } from "@/hooks/useSearch";
 interface Props {
   posts: LinkedInPost[];
   query: string;
+  searchType?: "topic" | "person";
 }
 
 function getRecencyBadge(dateStr?: string): { label: string; variant: "default" | "secondary" | "outline" | "destructive" } | null {
@@ -53,7 +54,7 @@ function getRecencyBadge(dateStr?: string): { label: string; variant: "default" 
   return { label: "Past year", variant: "outline" };
 }
 
-export function LinkedInPosts({ posts, query }: Props) {
+export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
   if (posts.length === 0) {
     return (
       <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
@@ -64,7 +65,7 @@ export function LinkedInPosts({ posts, query }: Props) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm">No LinkedIn posts found by "{query}"</p>
+          <p className="text-muted-foreground text-sm">No LinkedIn posts found {searchType === "person" ? `by "${query}"` : `about "${query}"`}</p>
         </CardContent>
       </Card>
     );
@@ -75,7 +76,7 @@ export function LinkedInPosts({ posts, query }: Props) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Linkedin className="h-5 w-5 text-primary" />
-          LinkedIn Posts by {query}
+          LinkedIn Posts {searchType === "person" ? `by ${query}` : `about ${query}`}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
