@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { query, apiKey } = await req.json();
+    const { query, apiKey, searchType = "topic" } = await req.json();
     if (!query) {
       return new Response(JSON.stringify({ error: "Query is required" }), {
         status: 400,
@@ -38,13 +38,22 @@ serve(async (req) => {
       ).then((r) => r.json()),
     ]);
 
-    // LinkedIn: try past week first, then month, then quarter, then year
+    // LinkedIn: different query strategy for person vs topic
     const timeRanges = ["qdr:w", "qdr:m", "qdr:y"];
     let linkedinPosts: any[] = [];
 
     for (const range of timeRanges) {
+      let linkedinQuery: string;
+      if (searchType === "person") {
+        // For person search: find posts authored by them on their LinkedIn profile
+        linkedinQuery = `site:linkedin.com/in/${encodeURIComponent(query)} OR site:linkedin.com/posts/${encodeURIComponent(query)}`;
+      } else {
+        // For topic search: find LinkedIn posts mentioning the topic
+        linkedinQuery = `site:linkedin.com/posts+${encodeURIComponent(query)}`;
+      }
+
       const res = await fetch(
-        `https://serpapi.com/search.json?q=site:linkedin.com/posts+${encodeURIComponent(query)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
+        `https://serpapi.com/search.json?q=${linkedinQuery}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
       const posts = res.organic_results || [];
