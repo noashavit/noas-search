@@ -108,13 +108,33 @@ serve(async (req) => {
       }
     }
 
+    // Extract date from LinkedIn activity ID in URL
+    function extractDateFromActivityId(url: string): string | null {
+      const match = url.match(/activity-(\d+)/);
+      if (!match) return null;
+      const activityId = BigInt(match[1]);
+      const timestampSeconds = Number(activityId >> 22n);
+      const date = new Date(timestampSeconds * 1000);
+      if (isNaN(date.getTime())) return null;
+      return date.toISOString().split("T")[0]; // YYYY-MM-DD
+    }
+
+    // Enrich posts with extracted dates and sort by recency
+    const enrichedLinkedin = linkedinPosts
+      .map((p: any) => ({
+        ...p,
+        date: extractDateFromActivityId(p.link) || p.date || p.rich_snippet?.top?.extensions?.[0] || null,
+      }))
+      .sort((a: any, b: any) => {
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        return dateB - dateA; // newest first
+      });
+
     const results = {
       google: googleResults.organic_results || [],
       trends: trendsData.interest_over_time?.timeline_data || [],
-      linkedin: linkedinPosts.map((p: any) => ({
-        ...p,
-        date: p.date || p.rich_snippet?.top?.extensions?.[0] || null,
-      })),
+      linkedin: enrichedLinkedin,
     };
 
     // Save to database
