@@ -24,22 +24,25 @@ function getRecencyBadge(dateStr?: string): { label: string; variant: "default" 
     const monthMatch = lower.match(/(\d+)\s*month/);
 
     if (hourMatch || (dayMatch && parseInt(dayMatch[1]) <= 1)) {
-      return { label: "Today", variant: "default" };
+      return { label: "Last 7 days", variant: "default" };
     }
     if (dayMatch && parseInt(dayMatch[1]) <= 7) {
-      return { label: "Past week", variant: "default" };
+      return { label: "Last 7 days", variant: "default" };
     }
     if (weekMatch && parseInt(weekMatch[1]) <= 1) {
-      return { label: "Past week", variant: "default" };
+      return { label: "Last 7 days", variant: "default" };
     }
     if ((weekMatch && parseInt(weekMatch[1]) <= 4) || (dayMatch && parseInt(dayMatch[1]) <= 30)) {
-      return { label: "Past month", variant: "secondary" };
+      return { label: "Last 30 days", variant: "default" };
     }
     if (monthMatch && parseInt(monthMatch[1]) <= 3) {
-      return { label: "Past quarter", variant: "outline" };
+      return { label: "Last 90 days", variant: "secondary" };
+    }
+    if (monthMatch && parseInt(monthMatch[1]) <= 12) {
+      return { label: "This year", variant: "outline" };
     }
     if (monthMatch) {
-      return { label: "Past year", variant: "outline" };
+      return { label: "Last year", variant: "outline" };
     }
     return null;
   }
@@ -47,11 +50,12 @@ function getRecencyBadge(dateStr?: string): { label: string; variant: "default" 
   const diffMs = now.getTime() - parsed.getTime();
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
-  if (diffDays <= 1) return { label: "Today", variant: "default" };
-  if (diffDays <= 7) return { label: "Past week", variant: "default" };
-  if (diffDays <= 30) return { label: "Past month", variant: "secondary" };
-  if (diffDays <= 90) return { label: "Past quarter", variant: "outline" };
-  return { label: "Past year", variant: "outline" };
+  if (diffDays <= 7) return { label: "Last 7 days", variant: "default" };
+  if (diffDays <= 30) return { label: "Last 30 days", variant: "default" };
+  if (diffDays <= 90) return { label: "Last 90 days", variant: "secondary" };
+  const currentYear = now.getFullYear();
+  if (parsed.getFullYear() === currentYear) return { label: "This year", variant: "outline" };
+  return { label: "Last year", variant: "outline" };
 }
 
 export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
