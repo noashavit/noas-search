@@ -39,35 +39,68 @@ serve(async (req) => {
     ]);
 
     // LinkedIn: different query strategy for person vs topic
-    const timeRanges = ["qdr:w", "qdr:m", "qdr:y"];
+    const timeRanges = ["qdr:w", "qdr:m", "qdr:y", ""];
     let linkedinPosts: any[] = [];
 
-    for (const range of timeRanges) {
-      let linkedinQuery: string;
-      if (searchType === "person") {
-        // For person search: find posts authored by that person (not profiles)
-        linkedinQuery = `site:linkedin.com/posts "${query}"`;
-      } else {
-        // For topic search: find LinkedIn posts mentioning the topic
-        linkedinQuery = `site:linkedin.com/posts ${query}`;
+    if (searchType === "person") {
+      // Try multiple slug formats: "Noa Shavit" -> ["noashavit", "noa-shavit"]
+      const nameClean = query.toLowerCase().trim();
+      const slugNoSep = nameClean.replace(/[^a-z0-9]+/g, "");
+      const slugHyphen = nameClean.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const slugs = [slugNoSep];
+      if (slugHyphen !== slugNoSep) slugs.push(slugHyphen);
+
+      // Strategy 1: strict slug-based URL search
+      for (const slug of slugs) {
+        if (linkedinPosts.length > 0) break;
+        for (const range of timeRanges) {
+          const linkedinQuery = `site:linkedin.com/posts/${slug}_`;
+          const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
+          const res = await fetch(
+            `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+          ).then((r) => r.json());
+
+          const posts = (res.organic_results || []).filter((p: any) =>
+            p.link && p.link.includes(`linkedin.com/posts/${slug}_`)
+          );
+
+          if (posts.length > 0) {
+            linkedinPosts = posts;
+            break;
+          }
+        }
       }
 
-      const res = await fetch(
-        `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
-      ).then((r) => r.json());
+      // Strategy 2: fallback — broader name search, filter by URL slug
+      if (linkedinPosts.length === 0) {
+        for (const range of timeRanges) {
+          const linkedinQuery = `site:linkedin.com/posts "${query}"`;
+          const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
+          const res = await fetch(
+            `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+          ).then((r) => r.json());
 
-      const posts = res.organic_results || [];
+          const posts = (res.organic_results || []).filter((p: any) => {
+            if (!p.link || !p.link.includes("linkedin.com/posts/")) return false;
+            // Check if URL slug matches any of the person's slug variants
+            return slugs.some(slug => p.link.includes(`/posts/${slug}`));
+          });
 
-      if (searchType === "person") {
-        // Filter to only actual post URLs (not profiles)
-        const filteredPosts = posts.filter((p: any) =>
-          p.link && p.link.includes("linkedin.com/posts/")
-        );
-        if (filteredPosts.length > 0) {
-          linkedinPosts = filteredPosts;
-          break;
+          if (posts.length > 0) {
+            linkedinPosts = posts;
+            break;
+          }
         }
-      } else {
+      }
+    } else {
+      for (const range of timeRanges) {
+        const linkedinQuery = `site:linkedin.com/posts ${query}`;
+        const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
+        const res = await fetch(
+          `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+        ).then((r) => r.json());
+
+        const posts = res.organic_results || [];
         if (posts.length > 0) {
           linkedinPosts = posts;
           break;
