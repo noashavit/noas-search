@@ -57,7 +57,7 @@ serve(async (req) => {
           const linkedinQuery = `site:linkedin.com/posts/${slug}_`;
           const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
           const res = await fetch(
-            `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+            `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=20${tbsParam}&sort=date&api_key=${serpApiKey}`
           ).then((r) => r.json());
 
           const posts = (res.organic_results || []).filter((p: any) =>
@@ -97,7 +97,7 @@ serve(async (req) => {
         const linkedinQuery = `site:linkedin.com/posts ${query}`;
         const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
         const res = await fetch(
-          `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+          `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=20${tbsParam}&api_key=${serpApiKey}`
         ).then((r) => r.json());
 
         const posts = res.organic_results || [];
