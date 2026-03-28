@@ -50,6 +50,7 @@ serve(async (req) => {
       const slugs = [slugNoSep];
       if (slugHyphen !== slugNoSep) slugs.push(slugHyphen);
 
+      // Strategy 1: strict slug-based URL search
       for (const slug of slugs) {
         if (linkedinPosts.length > 0) break;
         for (const range of timeRanges) {
@@ -62,6 +63,28 @@ serve(async (req) => {
           const posts = (res.organic_results || []).filter((p: any) =>
             p.link && p.link.includes(`linkedin.com/posts/${slug}_`)
           );
+
+          if (posts.length > 0) {
+            linkedinPosts = posts;
+            break;
+          }
+        }
+      }
+
+      // Strategy 2: fallback — broader name search, filter by URL slug
+      if (linkedinPosts.length === 0) {
+        for (const range of timeRanges) {
+          const linkedinQuery = `site:linkedin.com/posts "${query}"`;
+          const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
+          const res = await fetch(
+            `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
+          ).then((r) => r.json());
+
+          const posts = (res.organic_results || []).filter((p: any) => {
+            if (!p.link || !p.link.includes("linkedin.com/posts/")) return false;
+            // Check if URL slug matches any of the person's slug variants
+            return slugs.some(slug => p.link.includes(`/posts/${slug}`));
+          });
 
           if (posts.length > 0) {
             linkedinPosts = posts;
