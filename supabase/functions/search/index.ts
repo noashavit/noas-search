@@ -39,25 +39,36 @@ serve(async (req) => {
     ]);
 
     // LinkedIn: different query strategy for person vs topic
-    const timeRanges = ["qdr:w", "qdr:m", "qdr:y"];
+    const timeRanges = ["qdr:w", "qdr:m", "qdr:y", ""];
     let linkedinPosts: any[] = [];
+
+    // For person search, build the slug: "Noa Shavit" -> "noashavit"
+    const linkedinSlug = searchType === "person"
+      ? query.toLowerCase().trim().replace(/[^a-z0-9]+/g, "")
+      : "";
 
     for (const range of timeRanges) {
       let linkedinQuery: string;
       if (searchType === "person") {
-        // Convert name to LinkedIn slug: "Noa Shavit" -> "noashavit"
-        const linkedinSlug = query.toLowerCase().trim().replace(/[^a-z0-9]+/g, "");
         // Match authored posts: linkedin.com/posts/noashavit_*
         linkedinQuery = `site:linkedin.com/posts/${linkedinSlug}_`;
       } else {
         linkedinQuery = `site:linkedin.com/posts ${query}`;
       }
 
+      const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
       const res = await fetch(
-        `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10&tbs=sbd:1,${range}&api_key=${serpApiKey}`
+        `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=10${tbsParam}&api_key=${serpApiKey}`
       ).then((r) => r.json());
 
-      const posts = res.organic_results || [];
+      let posts = res.organic_results || [];
+
+      if (searchType === "person") {
+        // Strictly filter: only keep URLs matching linkedin.com/posts/{slug}_
+        posts = posts.filter((p: any) =>
+          p.link && p.link.includes(`linkedin.com/posts/${linkedinSlug}_`)
+        );
+      }
 
       if (posts.length > 0) {
         linkedinPosts = posts;
