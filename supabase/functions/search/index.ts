@@ -45,10 +45,11 @@ serve(async (req) => {
     for (const range of timeRanges) {
       let linkedinQuery: string;
       if (searchType === "person") {
-        // For person search: find posts authored by that person (not profiles)
-        linkedinQuery = `site:linkedin.com/posts "${query}"`;
+        // Convert name to LinkedIn slug: "Noa Shavit" -> "noashavit"
+        const linkedinSlug = query.toLowerCase().trim().replace(/[^a-z0-9]+/g, "");
+        // Match authored posts: linkedin.com/posts/noashavit_*
+        linkedinQuery = `site:linkedin.com/posts/${linkedinSlug}_`;
       } else {
-        // For topic search: find LinkedIn posts mentioning the topic
         linkedinQuery = `site:linkedin.com/posts ${query}`;
       }
 
@@ -58,20 +59,9 @@ serve(async (req) => {
 
       const posts = res.organic_results || [];
 
-      if (searchType === "person") {
-        // Filter to only actual post URLs (not profiles)
-        const filteredPosts = posts.filter((p: any) =>
-          p.link && p.link.includes("linkedin.com/posts/")
-        );
-        if (filteredPosts.length > 0) {
-          linkedinPosts = filteredPosts;
-          break;
-        }
-      } else {
-        if (posts.length > 0) {
-          linkedinPosts = posts;
-          break;
-        }
+      if (posts.length > 0) {
+        linkedinPosts = posts;
+        break;
       }
     }
 
