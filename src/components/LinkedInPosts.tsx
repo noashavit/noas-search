@@ -87,7 +87,7 @@ export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
                     {post.snippet}
                   </p>
                   {post.date && (
-                    <p className="text-xs text-muted-foreground/70 mt-1">{post.date}</p>
+                    <p className="text-xs text-muted-foreground/70 mt-1">{formatDate(post.date)}</p>
                   )}
                 </div>
                 <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
