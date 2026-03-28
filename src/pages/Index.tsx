@@ -57,20 +57,20 @@ const Index = () => {
       <main className="max-w-5xl mx-auto px-4 flex-1 w-full flex flex-col">
         {/* Hero / Search Section (no results yet) */}
         {!results && !loading && (
-          <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12">
-            <p className="text-base text-foreground w-full text-center font-medium">
+          <div className="flex-1 flex-col gap-6 py-12 flex items-center justify-start">
+            <p className="text-base text-foreground w-full text-center font-medium mt-[100px]">
               Get a high-level analysis and detailed information about any person or topic.
             </p>
-            <p className="text-sm text-muted-foreground w-full text-center">
-              Get the top 10 search results, the 10 most recent LinkedIn posts, see search trends and more, all in one place.
+            <p className="text-sm text-muted-foreground w-full text-center my-0 mb-[150px]">
+              Search trends. Top 10 search results. The 10 most recent LinkedIn posts
             </p>
 
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
-              Search Insights
+              Search anything
             </h2>
 
             {/* Search Type Toggle */}
-            <div className="flex items-center gap-2 w-full max-w-3xl">
+            <div className="gap-2 w-full max-w-3xl flex-row flex items-center justify-start">
               <button
                 onClick={() => handleToggleSearchType("topic")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
