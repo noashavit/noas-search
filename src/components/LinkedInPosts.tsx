@@ -15,37 +15,7 @@ function getRecencyBadge(dateStr?: string): { label: string; variant: "default" 
   const now = new Date();
   const parsed = new Date(dateStr);
 
-  // Try parsing relative strings like "1 day ago", "3 weeks ago"
-  if (isNaN(parsed.getTime())) {
-    const lower = dateStr.toLowerCase();
-    const hourMatch = lower.match(/(\d+)\s*hour/);
-    const dayMatch = lower.match(/(\d+)\s*day/);
-    const weekMatch = lower.match(/(\d+)\s*week/);
-    const monthMatch = lower.match(/(\d+)\s*month/);
-
-    if (hourMatch || (dayMatch && parseInt(dayMatch[1]) <= 1)) {
-      return { label: "Last 7 days", variant: "default" };
-    }
-    if (dayMatch && parseInt(dayMatch[1]) <= 7) {
-      return { label: "Last 7 days", variant: "default" };
-    }
-    if (weekMatch && parseInt(weekMatch[1]) <= 1) {
-      return { label: "Last 7 days", variant: "default" };
-    }
-    if ((weekMatch && parseInt(weekMatch[1]) <= 4) || (dayMatch && parseInt(dayMatch[1]) <= 30)) {
-      return { label: "Last 30 days", variant: "default" };
-    }
-    if (monthMatch && parseInt(monthMatch[1]) <= 3) {
-      return { label: "Last 90 days", variant: "secondary" };
-    }
-    if (monthMatch && parseInt(monthMatch[1]) <= 12) {
-      return { label: "This year", variant: "outline" };
-    }
-    if (monthMatch) {
-      return { label: "Last year", variant: "outline" };
-    }
-    return null;
-  }
+  if (isNaN(parsed.getTime())) return null;
 
   const diffMs = now.getTime() - parsed.getTime();
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
@@ -56,6 +26,13 @@ function getRecencyBadge(dateStr?: string): { label: string; variant: "default" 
   const currentYear = now.getFullYear();
   if (parsed.getFullYear() === currentYear) return { label: "This year", variant: "outline" };
   return { label: "Last year", variant: "outline" };
+}
+
+function formatDate(dateStr?: string): string | null {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
@@ -110,7 +87,7 @@ export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
                     {post.snippet}
                   </p>
                   {post.date && (
-                    <p className="text-xs text-muted-foreground/70 mt-1">{post.date}</p>
+                    <p className="text-xs text-muted-foreground/70 mt-1">{formatDate(post.date)}</p>
                   )}
                 </div>
                 <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
