@@ -62,7 +62,6 @@ export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
       </CardHeader>
       <CardContent className="space-y-3">
         {posts.map((post, i) => {
-          const badge = getRecencyBadge(post.date);
           return (
             <a
               key={i}
@@ -73,22 +72,12 @@ export function LinkedInPosts({ posts, query, searchType = "topic" }: Props) {
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-foreground group-hover:text-primary line-clamp-2 text-sm">
-                      {post.title}
-                    </h3>
-                    {badge && (
-                      <Badge variant={badge.variant} className="shrink-0 text-xs">
-                        {badge.label}
-                      </Badge>
-                    )}
-                  </div>
+                  <h3 className="font-medium text-foreground group-hover:text-primary line-clamp-2 text-sm">
+                    {post.title}
+                  </h3>
                   <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                     {post.snippet}
                   </p>
-                  {post.date && (
-                    <p className="text-xs text-muted-foreground/70 mt-1">{formatDate(post.date)}</p>
-                  )}
                 </div>
                 <ExternalLink className="h-4 w-4 text-muted-foreground shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
