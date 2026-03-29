@@ -42,68 +42,75 @@ serve(async (req) => {
     const timeRanges = ["qdr:w", "qdr:m", "qdr:y", ""];
     let linkedinPosts: any[] = [];
 
+    const TARGET_POSTS = 10;
+
     if (searchType === "person") {
-      // Try multiple slug formats: "Noa Shavit" -> ["noashavit", "noa-shavit"]
       const nameClean = query.toLowerCase().trim();
       const slugNoSep = nameClean.replace(/[^a-z0-9]+/g, "");
       const slugHyphen = nameClean.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       const slugs = [slugNoSep];
       if (slugHyphen !== slugNoSep) slugs.push(slugHyphen);
 
-      // Strategy 1: strict slug-based URL search
+      const seenLinks = new Set<string>();
+
+      // Strategy 1: strict slug-based URL search, accumulate across time ranges
       for (const slug of slugs) {
-        if (linkedinPosts.length > 0) break;
+        if (linkedinPosts.length >= TARGET_POSTS) break;
         for (const range of timeRanges) {
+          if (linkedinPosts.length >= TARGET_POSTS) break;
           const linkedinQuery = `site:linkedin.com/posts/${slug}_`;
           const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
           const res = await fetch(
             `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=20${tbsParam}&sort=date&api_key=${serpApiKey}`
           ).then((r) => r.json());
 
-          const posts = (res.organic_results || []).filter((p: any) =>
-            p.link && p.link.includes(`linkedin.com/posts/${slug}_`)
-          );
-
-          if (posts.length > 0) {
-            linkedinPosts = posts;
-            break;
+          for (const p of (res.organic_results || [])) {
+            if (linkedinPosts.length >= TARGET_POSTS) break;
+            if (p.link && p.link.includes(`linkedin.com/posts/${slug}_`) && !seenLinks.has(p.link)) {
+              seenLinks.add(p.link);
+              linkedinPosts.push(p);
+            }
           }
         }
       }
 
-      // Strategy 2: fallback — broader name search, filter by URL slug
-      if (linkedinPosts.length === 0) {
+      // Strategy 2: fallback — broader name search
+      if (linkedinPosts.length < TARGET_POSTS) {
         for (const range of timeRanges) {
+          if (linkedinPosts.length >= TARGET_POSTS) break;
           const linkedinQuery = `site:linkedin.com/posts "${query}"`;
           const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
           const res = await fetch(
             `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=20${tbsParam}&sort=date&api_key=${serpApiKey}`
           ).then((r) => r.json());
 
-          const posts = (res.organic_results || []).filter((p: any) => {
-            if (!p.link || !p.link.includes("linkedin.com/posts/")) return false;
-            // Check if URL slug matches any of the person's slug variants
-            return slugs.some(slug => p.link.includes(`/posts/${slug}`));
-          });
-
-          if (posts.length > 0) {
-            linkedinPosts = posts;
-            break;
+          for (const p of (res.organic_results || [])) {
+            if (linkedinPosts.length >= TARGET_POSTS) break;
+            if (p.link && p.link.includes("linkedin.com/posts/") && !seenLinks.has(p.link)) {
+              if (slugs.some(slug => p.link.includes(`/posts/${slug}`))) {
+                seenLinks.add(p.link);
+                linkedinPosts.push(p);
+              }
+            }
           }
         }
       }
     } else {
+      const seenLinks = new Set<string>();
       for (const range of timeRanges) {
+        if (linkedinPosts.length >= TARGET_POSTS) break;
         const linkedinQuery = `site:linkedin.com/posts ${query}`;
         const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
         const res = await fetch(
           `https://serpapi.com/search.json?q=${encodeURIComponent(linkedinQuery)}&gl=us&hl=en&num=20${tbsParam}&api_key=${serpApiKey}`
         ).then((r) => r.json());
 
-        const posts = res.organic_results || [];
-        if (posts.length > 0) {
-          linkedinPosts = posts;
-          break;
+        for (const p of (res.organic_results || [])) {
+          if (linkedinPosts.length >= TARGET_POSTS) break;
+          if (p.link && !seenLinks.has(p.link)) {
+            seenLinks.add(p.link);
+            linkedinPosts.push(p);
+          }
         }
       }
     }
