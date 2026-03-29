@@ -102,6 +102,13 @@ const Index = () => {
                 Search
               </Button>
             </form>
+
+            <p className="text-base text-foreground w-full text-center font-medium">
+              Get a high-level analysis and detailed information about any person or topic.
+            </p>
+            <p className="text-sm text-muted-foreground w-full text-center my-0">
+              Search trends. Top 10 search results. The 10 most recent LinkedIn posts
+            </p>
           </div>
         )}
 
