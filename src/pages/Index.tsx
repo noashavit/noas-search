@@ -7,6 +7,9 @@ import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
 import { AnalystSummary } from "@/components/AnalystSummary";
+import { WikipediaCard } from "@/components/WikipediaCard";
+import { RedditThreads } from "@/components/RedditThreads";
+import { LinkedInProfileCard } from "@/components/LinkedInProfileCard";
 import { useSearch } from "@/hooks/useSearch";
 import { useApiKey } from "@/hooks/useApiKey";
 
@@ -34,20 +37,12 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <ApiKeyDialog open={!hasApiKey} onSubmit={setApiKey} />
 
-      {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
           <Sparkles className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold tracking-tight">Search Insights</h1>
-          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full font-mono">
-            US
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={clearApiKey}
-            className="ml-auto text-xs text-muted-foreground"
-          >
+          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full font-mono">US</span>
+          <Button variant="ghost" size="sm" onClick={clearApiKey} className="ml-auto text-xs text-muted-foreground">
             <KeyRound className="h-3.5 w-3.5 mr-1" />
             Change API Key
           </Button>
@@ -55,21 +50,15 @@ const Index = () => {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 flex-1 w-full flex flex-col">
-        {/* Hero / Search Section (no results yet) */}
         {!results && !loading && (
           <div className="flex-1 flex-col gap-6 py-12 flex items-center justify-start">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mt-[100px]">
-              Search anything
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground mt-[100px]">Search anything</h2>
 
-            {/* Search Type Toggle */}
             <div className="gap-2 w-full max-w-3xl flex-row flex items-center justify-start">
               <button
                 onClick={() => handleToggleSearchType("topic")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  searchType === "topic"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  searchType === "topic" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
@@ -78,9 +67,7 @@ const Index = () => {
               <button
                 onClick={() => handleToggleSearchType("person")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  searchType === "person"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  searchType === "person" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 <User className="h-4 w-4" />
@@ -112,17 +99,13 @@ const Index = () => {
           </div>
         )}
 
-        {/* Search bar + results/loading */}
         {(results || loading) && (
           <div className="py-8 space-y-6">
-            {/* Search Type Toggle */}
             <div className="flex items-center gap-2 max-w-3xl mx-auto w-full">
               <button
                 onClick={() => handleToggleSearchType("topic")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  searchType === "topic"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  searchType === "topic" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
@@ -131,9 +114,7 @@ const Index = () => {
               <button
                 onClick={() => handleToggleSearchType("person")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  searchType === "person"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  searchType === "person" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 <User className="h-4 w-4" />
@@ -159,9 +140,7 @@ const Index = () => {
             {loading && (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground text-sm">
-                  Fetching results, trends & LinkedIn posts…
-                </p>
+                <p className="text-muted-foreground text-sm">Fetching results, trends & LinkedIn posts…</p>
               </div>
             )}
 
@@ -169,6 +148,19 @@ const Index = () => {
               <div className="space-y-6">
                 <AnalystSummary summary={summary} loading={summaryLoading} />
                 <TrendsChart data={results.trends} query={query} />
+
+                {/* Topic: Wikipedia + Reddit */}
+                {searchType === "topic" && (results.wikipedia || (results.reddit && results.reddit.length > 0)) && (
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    {results.wikipedia && <WikipediaCard data={results.wikipedia} />}
+                    {results.reddit && results.reddit.length > 0 && <RedditThreads threads={results.reddit} />}
+                  </div>
+                )}
+
+                {/* Person: LinkedIn Profile */}
+                {searchType === "person" && results.linkedinProfile && (
+                  <LinkedInProfileCard profile={results.linkedinProfile} />
+                )}
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
@@ -180,16 +172,10 @@ const Index = () => {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border/50 bg-card/50 backdrop-blur-sm mt-auto">
         <div className="max-w-5xl mx-auto px-4 py-4 text-center text-sm text-muted-foreground">
           Made with ❤️ by{" "}
-          <a
-            href="https://www.linkedin.com/in/noashavit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-primary hover:underline"
-          >
+          <a href="https://www.linkedin.com/in/noashavit" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">
             Noa Shavit
           </a>
         </div>
