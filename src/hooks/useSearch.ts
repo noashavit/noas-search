@@ -23,36 +23,10 @@ export interface LinkedInPost {
   date?: string;
 }
 
-export interface WikipediaResult {
-  title: string;
-  extract: string;
-  url: string;
-  thumbnail?: string | null;
-}
-
-export interface RedditThread {
-  title: string;
-  url: string;
-  subreddit: string;
-  score: number;
-  num_comments: number;
-  created_utc: number;
-}
-
-export interface LinkedInProfile {
-  title: string;
-  link: string;
-  snippet: string;
-  thumbnail?: string | null;
-}
-
 export interface SearchResults {
   google: GoogleResult[];
   trends: TrendsPoint[];
   linkedin: LinkedInPost[];
-  wikipedia?: WikipediaResult | null;
-  reddit?: RedditThread[];
-  linkedinProfile?: LinkedInProfile | null;
 }
 
 export interface SearchHistory {
@@ -81,6 +55,7 @@ export function useSearch() {
       setResults(searchResults);
       await loadHistory();
 
+      // Kick off AI summary in background
       setSummaryLoading(true);
       supabase.functions
         .invoke("analyze", {
