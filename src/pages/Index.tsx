@@ -157,14 +157,7 @@ const Index = () => {
               </Button>
             </form>
 
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground text-sm">
-                  Fetching results, trends & LinkedIn posts…
-                </p>
-              </div>
-            )}
+            {loading && <SearchProgress />}
 
             {results && !loading && (
               <div className="space-y-6">
