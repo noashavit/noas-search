@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { query, searchType, google, trends, linkedin, reddit } = await req.json();
+    const { query, searchType, google, trends, linkedin } = await req.json();
 
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) throw new Error("LOVABLE_API_KEY not configured");
@@ -25,15 +25,11 @@ serve(async (req) => {
 
     const socialSection = (linkedin && linkedin.length > 0)
       ? `3. **Recent Activity** — Summarize any notable LinkedIn activity or lack thereof.`
-      : (reddit && reddit.length > 0)
-        ? `3. **Recent Activity** — Summarize notable Reddit discussions about this topic.`
-        : `3. **Recent Activity** — Note the absence of recent social media activity.`;
+      : `3. **Recent Activity** — Note the absence of recent social media activity.`;
 
     const socialData = (linkedin && linkedin.length > 0)
       ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
-      : (reddit && reddit.length > 0)
-        ? `Reddit Threads: ${JSON.stringify(reddit?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
-        : `No social media posts found.`;
+      : `No social media posts found.`;
 
     const prompt = `You are a senior market/reputation analyst. Given SERP data for the query "${query}", write a concise analyst briefing (3-5 short paragraphs, ~200 words total).
 
