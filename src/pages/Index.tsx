@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
+import { RedditPosts } from "@/components/RedditPosts";
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
 import { AnalystSummary } from "@/components/AnalystSummary";
 import { useSearch } from "@/hooks/useSearch";
@@ -166,7 +167,13 @@ const Index = () => {
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
-                  <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
+                  {results.linkedin.length > 0 ? (
+                    <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
+                  ) : results.reddit && results.reddit.length > 0 ? (
+                    <RedditPosts posts={results.reddit} query={query} />
+                  ) : (
+                    <LinkedInPosts posts={[]} query={query} searchType={searchType} />
+                  )}
                 </div>
               </div>
             )}
