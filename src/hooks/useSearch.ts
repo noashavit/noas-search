@@ -23,17 +23,10 @@ export interface LinkedInPost {
   date?: string;
 }
 
-export interface RedditPost {
-  title: string;
-  link: string;
-  snippet: string;
-}
-
 export interface SearchResults {
   google: GoogleResult[];
   trends: TrendsPoint[];
   linkedin: LinkedInPost[];
-  reddit?: RedditPost[];
 }
 
 export interface SearchHistory {
@@ -72,7 +65,7 @@ export function useSearch() {
             google: searchResults.google,
             trends: searchResults.trends,
             linkedin: searchResults.linkedin,
-            reddit: searchResults.reddit,
+            
           },
         })
         .then(({ data: analyzeData, error: analyzeError }) => {
