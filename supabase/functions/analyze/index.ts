@@ -12,27 +12,45 @@ serve(async (req) => {
   }
 
   try {
-    const { query, google, trends, linkedin } = await req.json();
+    const { query, searchType, google, trends, linkedin, reddit } = await req.json();
 
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) throw new Error("LOVABLE_API_KEY not configured");
+
+    const isPerson = searchType === "person";
+
+    const linkInstruction = isPerson
+      ? "Do NOT include any markdown links or URLs in your response. Write in plain text only."
+      : "When you mention specific tools, services, websites, companies, or people, include a markdown link to their homepage or relevant page. For example: [SerpAPI](https://serpapi.com), [LinkedIn](https://linkedin.com). Also link to sources from the Google results data when substantiating claims.";
+
+    const socialSection = (linkedin && linkedin.length > 0)
+      ? `3. **Recent Activity** — Summarize any notable LinkedIn activity or lack thereof.`
+      : (reddit && reddit.length > 0)
+        ? `3. **Recent Activity** — Summarize notable Reddit discussions about this topic.`
+        : `3. **Recent Activity** — Note the absence of recent social media activity.`;
+
+    const socialData = (linkedin && linkedin.length > 0)
+      ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
+      : (reddit && reddit.length > 0)
+        ? `Reddit Threads: ${JSON.stringify(reddit?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
+        : `No social media posts found.`;
 
     const prompt = `You are a senior market/reputation analyst. Given SERP data for the query "${query}", write a concise analyst briefing (3-5 short paragraphs, ~200 words total).
 
 Structure:
 1. **Overview** — Who/what is this and their current positioning based on top Google results.
 2. **Trend Analysis** — Interpret the Google Trends data. Is interest rising, falling, spiking? Call out any notable inflection points.
-3. **Recent Activity** — Summarize any notable LinkedIn activity or lack thereof.
+${socialSection}
 4. **Key Takeaway** — One bold sentence summarizing the most important insight.
 
-IMPORTANT: When you mention specific tools, services, websites, companies, or people, include a markdown link to their homepage or relevant page. For example: [SerpAPI](https://serpapi.com), [LinkedIn](https://linkedin.com). Also link to sources from the Google results data when substantiating claims. Use plain language, be specific about data points, and highlight anything unusual or noteworthy.
+IMPORTANT: ${linkInstruction} Use plain language, be specific about data points, and highlight anything unusual or noteworthy.
 
 DATA:
 Top Google Results: ${JSON.stringify(google?.slice(0, 5)?.map((r: any) => ({ title: r.title, snippet: r.snippet, link: r.link })))}
 
 Google Trends (monthly interest values): ${JSON.stringify(trends?.slice(-6)?.map((t: any) => ({ date: t.date, value: t.values?.[0]?.extracted_value })))}
 
-LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`;
+${socialData}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
