@@ -23,10 +23,17 @@ export interface LinkedInPost {
   date?: string;
 }
 
+export interface RedditPost {
+  title: string;
+  link: string;
+  snippet: string;
+}
+
 export interface SearchResults {
   google: GoogleResult[];
   trends: TrendsPoint[];
   linkedin: LinkedInPost[];
+  reddit?: RedditPost[];
 }
 
 export interface SearchHistory {
@@ -61,9 +68,11 @@ export function useSearch() {
         .invoke("analyze", {
           body: {
             query,
+            searchType,
             google: searchResults.google,
             trends: searchResults.trends,
             linkedin: searchResults.linkedin,
+            reddit: searchResults.reddit,
           },
         })
         .then(({ data: analyzeData, error: analyzeError }) => {
