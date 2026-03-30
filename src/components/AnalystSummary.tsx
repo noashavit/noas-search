@@ -27,13 +27,29 @@ export function AnalystSummary({ summary, loading }: Props) {
           <div className="prose prose-sm dark:prose-invert max-w-none text-foreground/90 [&_strong]:text-foreground [&_p]:mb-2 [&_p:last-child]:mb-0">
             {summary!.split("\n").map((line, i) => {
               if (!line.trim()) return null;
-              // Render bold markers
-              const parts = line.split(/(\*\*.*?\*\*)/g).map((part, j) => {
-                if (part.startsWith("**") && part.endsWith("**")) {
-                  return <strong key={j}>{part.slice(2, -2)}</strong>;
-                }
-                return part;
-              });
+              // Render bold markers and markdown links
+              const parts = line
+                .split(/(\*\*.*?\*\*|\[.*?\]\(.*?\))/g)
+                .map((part, j) => {
+                  if (part.startsWith("**") && part.endsWith("**")) {
+                    return <strong key={j}>{part.slice(2, -2)}</strong>;
+                  }
+                  const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+                  if (linkMatch) {
+                    return (
+                      <a
+                        key={j}
+                        href={linkMatch[2]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {linkMatch[1]}
+                      </a>
+                    );
+                  }
+                  return part;
+                });
               return <p key={i}>{parts}</p>;
             })}
           </div>
