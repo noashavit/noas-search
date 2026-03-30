@@ -65,7 +65,7 @@ export function useSearch() {
             google: searchResults.google,
             trends: searchResults.trends,
             linkedin: searchResults.linkedin,
-            reddit: searchResults.reddit,
+            
           },
         })
         .then(({ data: analyzeData, error: analyzeError }) => {
