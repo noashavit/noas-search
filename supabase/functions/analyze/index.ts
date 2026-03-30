@@ -25,7 +25,7 @@ Structure:
 3. **Recent Activity** — Summarize any notable LinkedIn activity or lack thereof.
 4. **Key Takeaway** — One bold sentence summarizing the most important insight.
 
-Use plain language, be specific about data points, and highlight anything unusual or noteworthy.
+IMPORTANT: When you mention specific tools, services, websites, companies, or people, include a markdown link to their homepage or relevant page. For example: [SerpAPI](https://serpapi.com), [LinkedIn](https://linkedin.com). Also link to sources from the Google results data when substantiating claims. Use plain language, be specific about data points, and highlight anything unusual or noteworthy.
 
 DATA:
 Top Google Results: ${JSON.stringify(google?.slice(0, 5)?.map((r: any) => ({ title: r.title, snippet: r.snippet, link: r.link })))}
