@@ -138,11 +138,40 @@ serve(async (req) => {
         return dateB - dateA; // newest first
       });
 
-    const results = {
+    // Reddit fallback: if no LinkedIn posts found, search Reddit
+    let redditPosts: any[] = [];
+    if (enrichedLinkedin.length === 0) {
+      const redditTimeRanges = ["qdr:w", "qdr:m", "qdr:3m", "qdr:y", ""];
+      const TARGET_REDDIT = 10;
+      const seenRedditLinks = new Set<string>();
+
+      for (const range of redditTimeRanges) {
+        if (redditPosts.length >= TARGET_REDDIT) break;
+        const redditQuery = `site:reddit.com ${query}`;
+        const tbsParam = range ? `&tbs=sbd:1,${range}` : "&tbs=sbd:1";
+        const res = await fetch(
+          `https://serpapi.com/search.json?q=${encodeURIComponent(redditQuery)}&gl=us&hl=en&num=20${tbsParam}&api_key=${serpApiKey}`
+        ).then((r) => r.json());
+
+        for (const p of (res.organic_results || [])) {
+          if (redditPosts.length >= TARGET_REDDIT) break;
+          if (p.link && !seenRedditLinks.has(p.link)) {
+            seenRedditLinks.add(p.link);
+            redditPosts.push({ title: p.title, link: p.link, snippet: p.snippet });
+          }
+        }
+      }
+    }
+
+    const results: any = {
       google: googleResults.organic_results || [],
       trends: trendsData.interest_over_time?.timeline_data || [],
       linkedin: enrichedLinkedin,
     };
+
+    if (redditPosts.length > 0) {
+      results.reddit = redditPosts;
+    }
 
     // Save to database
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
