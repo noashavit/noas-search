@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
+import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
@@ -156,14 +157,7 @@ const Index = () => {
               </Button>
             </form>
 
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground text-sm">
-                  Fetching results, trends & LinkedIn posts…
-                </p>
-              </div>
-            )}
+            {loading && <SearchProgress />}
 
             {results && !loading && (
               <div className="space-y-6">
