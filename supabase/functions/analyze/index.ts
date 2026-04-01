@@ -28,7 +28,7 @@ serve(async (req) => {
       : `3. **Recent Activity** — Note the absence of recent social media activity.`;
 
     const socialData = (linkedin && linkedin.length > 0)
-      ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
+      ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet, link: p.link })))}`
       : `No social media posts found.`;
 
     const prompt = `You are a senior market/reputation analyst. Given SERP data for the query "${query}", write a concise analyst briefing (3-5 short paragraphs, ~200 words total).
