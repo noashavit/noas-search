@@ -36,7 +36,11 @@ export function AnalystSummary({ summary, loading }: Props) {
                   }
                   const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
                   if (linkMatch) {
-                    return linkMatch[1]; // plain text, no link
+                    const isLinkedIn = linkMatch[2].includes("linkedin.com/posts/");
+                    if (isLinkedIn) {
+                      return <a key={j} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">{linkMatch[1]}</a>;
+                    }
+                    return linkMatch[1];
                   }
                   return part;
                 });
