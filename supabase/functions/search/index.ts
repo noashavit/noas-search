@@ -142,10 +142,21 @@ serve(async (req) => {
         return dateB - dateA; // newest first
       });
 
+    // Extract related queries (top and rising)
+    const relatedTop = relatedQueriesData?.related_queries?.top?.slice(0, 10)?.map((q: any) => ({
+      query: q.query,
+      value: q.value,
+    })) || [];
+    const relatedRising = relatedQueriesData?.related_queries?.rising?.slice(0, 10)?.map((q: any) => ({
+      query: q.query,
+      value: q.value,
+    })) || [];
+
     const results = {
       google: googleResults.organic_results || [],
       trends: trendsData.interest_over_time?.timeline_data || [],
       linkedin: enrichedLinkedin,
+      relatedQueries: { top: relatedTop, rising: relatedRising },
     };
 
     // Save to database
