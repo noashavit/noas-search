@@ -28,13 +28,17 @@ serve(async (req) => {
     }
 
     // Fetch Google + Trends in parallel, then LinkedIn with recency fallback
-    const [googleResults, trendsData] = await Promise.all([
+    const [googleResults, trendsData, relatedQueriesData] = await Promise.all([
       fetch(
         `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&gl=us&hl=en&num=10&api_key=${serpApiKey}`
       ).then((r) => r.json()),
 
       fetch(
         `https://serpapi.com/search.json?engine=google_trends&q=${encodeURIComponent(query)}&geo=US&date=today+12-m&api_key=${serpApiKey}`
+      ).then((r) => r.json()),
+
+      fetch(
+        `https://serpapi.com/search.json?engine=google_trends&q=${encodeURIComponent(query)}&geo=US&date=today+12-m&data_type=RELATED_QUERIES&api_key=${serpApiKey}`
       ).then((r) => r.json()),
     ]);
 
