@@ -20,7 +20,7 @@ serve(async (req) => {
     const isPerson = searchType === "person";
 
     const linkInstruction = isPerson
-      ? "Do NOT include any markdown links or URLs in your response. Write in plain text only."
+      ? "Do NOT include markdown links to external websites, tools, or services. However, when you quote or reference a specific LinkedIn post from the data below, you MUST wrap the quote or post title in a markdown link to that post's URL. For example: [\"59% of employees use unapproved AI tools\"](https://linkedin.com/posts/...)."
       : "When you mention specific tools, services, websites, companies, or people, include a markdown link to their homepage or relevant page. For example: [SerpAPI](https://serpapi.com), [LinkedIn](https://linkedin.com). Also link to sources from the Google results data when substantiating claims.";
 
     const socialSection = (linkedin && linkedin.length > 0)
@@ -28,7 +28,7 @@ serve(async (req) => {
       : `3. **Recent Activity** — Note the absence of recent social media activity.`;
 
     const socialData = (linkedin && linkedin.length > 0)
-      ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet })))}`
+      ? `LinkedIn Posts: ${JSON.stringify(linkedin?.slice(0, 5)?.map((p: any) => ({ title: p.title, snippet: p.snippet, link: p.link })))}`
       : `No social media posts found.`;
 
     const prompt = `You are a senior market/reputation analyst. Given SERP data for the query "${query}", write a concise analyst briefing (3-5 short paragraphs, ~200 words total).
