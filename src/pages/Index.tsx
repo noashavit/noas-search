@@ -4,6 +4,7 @@ import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
+import { RelatedQueries } from "@/components/RelatedQueries";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
 
@@ -164,6 +165,7 @@ const Index = () => {
               <div className="space-y-6">
                 <AnalystSummary summary={summary} loading={summaryLoading} />
                 <TrendsChart data={results.trends} query={query} />
+                {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
