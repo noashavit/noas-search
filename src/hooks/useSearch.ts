@@ -23,10 +23,21 @@ export interface LinkedInPost {
   date?: string;
 }
 
+export interface RelatedQuery {
+  query: string;
+  value: number | string;
+}
+
+export interface RelatedQueries {
+  top: RelatedQuery[];
+  rising: RelatedQuery[];
+}
+
 export interface SearchResults {
   google: GoogleResult[];
   trends: TrendsPoint[];
   linkedin: LinkedInPost[];
+  relatedQueries?: RelatedQueries;
 }
 
 export interface SearchHistory {
