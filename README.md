@@ -1,3 +1,80 @@
-# Welcome to your Lovable project
+# Search Insights
 
-TODO: Document your project here
+**Real-time research on any topic or person — search trends, top results, and live LinkedIn posts in one dashboard.**
+
+🔗 **[Live app →](https://noas-search.lovable.app)**
+
+---
+
+## What it does
+
+Research is fragmented by default. Google Trends in one tab, LinkedIn in another, search results in a third — then a manual summary on top of it all.
+
+Search Insights collapses that into a single query. Type a topic or a person's name and get back four things simultaneously:
+
+- **AI analyst briefing** — a structured synthesis covering what the term is, how interest is trending, what people are saying about it right now, and the single most important signal
+- **Google Trends chart** — 12 months of US search interest
+- **Top 10 Google results** — the highest-authority sources currently defining the topic
+- **Live LinkedIn posts** — the 10 most recent posts mentioning the topic, or authored by the person
+
+---
+
+## Search modes
+
+**Topic Mode** — research any concept, technology, company, or trend. The LinkedIn feed surfaces who is actively talking about the topic right now: which voices are defining it, what angles they're taking, how the framing is evolving.
+
+**Person Mode** — research a specific individual. Instead of posts that mention them, it pulls posts they authored — their actual LinkedIn feed, surfaced directly. Useful before meetings, outreach, or conference prep.
+
+The distinction matters. In Person Mode you're not reading *about* someone. You're reading what they've been publishing this week.
+
+---
+
+## How to use it
+
+1. Go to [noas-search.lovable.app](https://noas-search.lovable.app)
+2. Enter your [SerpAPI key](https://serpapi.com) when prompted
+3. Choose **Topic** or **Person** mode
+4. Search
+
+**On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. A free SerpAPI tier is available at [serpapi.com](https://serpapi.com) — no credit card required to start.
+
+---
+
+## Architecture
+
+Built as a React + Vite single-page app, deployed via [Lovable](https://lovable.dev).
+
+All external data — Google Search results, Google Trends, and LinkedIn posts — is fetched through [SerpAPI](https://serpapi.com), which provides a single clean interface across all three sources. The AI analyst briefing is generated server-side and synthesizes all data sources into a structured narrative on each query.
+
+The SerpAPI key is the only credential the app requires from the user. It is passed at runtime, kept in session memory only, and never written to any server or storage layer.
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, Vite |
+| Deployment | Lovable |
+| Data | SerpAPI (Google Search, Trends, LinkedIn) |
+| AI summarization | Server-side, per query |
+| Scope | US results |
+
+---
+
+## Local development
+
+```bash
+git clone https://github.com/noashavit/noas-search.git
+cd noas-search
+npm install
+npm run dev
+```
+
+You'll need a SerpAPI key to run searches. Enter it in the UI when prompted — no `.env` file required.
+
+---
+
+## Built by
+
+[Noa Shavit](https://www.linkedin.com/in/noashavit) — product marketer and AI builder based in San Francisco.
