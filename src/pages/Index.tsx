@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Search, Loader2, KeyRound, User, BookOpen } from "lucide-react";
-import headerIcon from "@/assets/icon.png";
+import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
 import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,7 @@ const Index = () => {
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
-          <img src={headerIcon} alt="Search Insights" className="h-7 w-7" />
+          <Sparkles className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold tracking-tight">Search Insights</h1>
           <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full font-mono">
             US
