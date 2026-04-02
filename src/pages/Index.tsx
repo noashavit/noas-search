@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
+import { Search, Loader2, KeyRound, User, BookOpen } from "lucide-react";
+import headerIcon from "@/assets/icon.png";
 import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
