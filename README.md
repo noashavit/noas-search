@@ -32,7 +32,7 @@ The distinction matters. In Person Mode you're not reading *about* someone. You'
 ## How to use it
 
 1. Go to [noas-search.lovable.app](https://noas-search.lovable.app)
-2. Enter your [SerpAPI key](https://serpapi.com) when prompted
+2. Enter your SerpAPI key when prompted
 3. Choose **Topic** or **Person** mode
 4. Search
 
@@ -42,9 +42,9 @@ The distinction matters. In Person Mode you're not reading *about* someone. You'
 
 ## Architecture
 
-Built as a React + Vite single-page app, deployed via [Lovable](https://lovable.dev).
+Built as a React + Vite single-page app, deployed via Lovable.
 
-All external data — Google Search results, Google Trends, and LinkedIn posts — is fetched through [SerpAPI](https://serpapi.com), which provides a single clean interface across all three sources. The AI analyst briefing is generated server-side and synthesizes all data sources into a structured narrative on each query.
+All external data — Google Search results, Google Trends, and LinkedIn posts — is fetched through SerpAPI, which provides a single clean interface across all three sources. The AI analyst briefing is generated server-side and synthesizes all data sources into a structured narrative on each query.
 
 The SerpAPI key is the only credential the app requires from the user. It is passed at runtime, kept in session memory only, and never written to any server or storage layer.
 
