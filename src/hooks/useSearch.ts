@@ -117,6 +117,24 @@ export function useSearch() {
           }
         })
         .finally(() => setSummaryLoading(false));
+
+      // Kick off spike analysis if spikes detected
+      const spikes = detectSpikes(searchResults.trends);
+      if (spikes.length > 0) {
+        setSpikeLoading(true);
+        supabase.functions
+          .invoke("spike-analysis", {
+            body: { query, spikes, apiKey },
+          })
+          .then(({ data: spikeRes, error: spikeErr }) => {
+            if (spikeErr) {
+              console.error("Spike analysis error:", spikeErr);
+            } else {
+              setSpikeData(spikeRes?.spikes || []);
+            }
+          })
+          .finally(() => setSpikeLoading(false));
+      }
     } catch (err: any) {
       toast({
         title: "Search failed",
