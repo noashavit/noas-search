@@ -165,7 +165,8 @@ const Index = () => {
             {results && !loading && (
               <div className="space-y-6">
                 <AnalystSummary summary={summary} loading={summaryLoading} />
-                <TrendsChart data={results.trends} query={query} />
+                <TrendsChart data={results.trends} query={query} spikeData={spikeData} />
+                <SpikeInsights spikes={spikeData} loading={spikeLoading} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
                 <div className="grid gap-6 lg:grid-cols-2">
