@@ -46,47 +46,17 @@ export interface SearchHistory {
   created_at: string;
 }
 
-export interface SpikeResult {
-  date: string;
-  value: number;
-  explanation: string;
-  articles: { title: string; link: string; source: string }[];
-}
-
-function detectSpikes(trends: TrendsPoint[]): { date: string; value: number }[] {
-  const values = trends.map((t) => t.values?.[0]?.extracted_value ?? 0);
-  const spikes: { date: string; value: number }[] = [];
-
-  for (let i = 0; i < values.length; i++) {
-    if (values[i] < 40) continue;
-    const neighbors: number[] = [];
-    for (let j = Math.max(0, i - 2); j <= Math.min(values.length - 1, i + 2); j++) {
-      if (j !== i) neighbors.push(values[j]);
-    }
-    if (!neighbors.length) continue;
-    const avg = neighbors.reduce((a, b) => a + b, 0) / neighbors.length;
-    if (values[i] > avg * 1.5) {
-      spikes.push({ date: trends[i].date, value: values[i] });
-    }
-  }
-  return spikes;
-}
-
 export function useSearch() {
   const [results, setResults] = useState<SearchResults | null>(null);
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
   const [summaryLoading, setSummaryLoading] = useState(false);
-  const [spikeData, setSpikeData] = useState<SpikeResult[]>([]);
-  const [spikeLoading, setSpikeLoading] = useState(false);
   const [history, setHistory] = useState<SearchHistory[]>([]);
   const { toast } = useToast();
 
   const search = async (query: string, apiKey?: string, searchType: string = "topic") => {
     setLoading(true);
     setSummary(null);
-    setSpikeData([]);
-    setSpikeLoading(false);
     try {
       const { data, error } = await supabase.functions.invoke("search", {
         body: { query, apiKey, searchType },
@@ -117,24 +87,6 @@ export function useSearch() {
           }
         })
         .finally(() => setSummaryLoading(false));
-
-      // Kick off spike analysis if spikes detected
-      const spikes = detectSpikes(searchResults.trends);
-      if (spikes.length > 0) {
-        setSpikeLoading(true);
-        supabase.functions
-          .invoke("spike-analysis", {
-            body: { query, spikes, apiKey },
-          })
-          .then(({ data: spikeRes, error: spikeErr }) => {
-            if (spikeErr) {
-              console.error("Spike analysis error:", spikeErr);
-            } else {
-              setSpikeData(spikeRes?.spikes || []);
-            }
-          })
-          .finally(() => setSpikeLoading(false));
-      }
     } catch (err: any) {
       toast({
         title: "Search failed",
@@ -158,8 +110,7 @@ export function useSearch() {
   const clearResults = () => {
     setResults(null);
     setSummary(null);
-    setSpikeData([]);
   };
 
-  return { results, loading, search, history, loadHistory, summary, summaryLoading, spikeData, spikeLoading, clearResults };
+  return { results, loading, search, history, loadHistory, summary, summaryLoading, clearResults };
 }

@@ -4,7 +4,6 @@ import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
-import { SpikeInsights } from "@/components/SpikeInsights";
 import { RelatedQueries } from "@/components/RelatedQueries";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
@@ -19,7 +18,7 @@ type SearchType = "topic" | "person";
 const Index = () => {
   const [query, setQuery] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("topic");
-  const { results, loading, search, summary, summaryLoading, spikeData, spikeLoading, clearResults } = useSearch();
+  const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
 
   const handleToggleSearchType = (type: SearchType) => {
@@ -165,8 +164,7 @@ const Index = () => {
             {results && !loading && (
               <div className="space-y-6">
                 <AnalystSummary summary={summary} loading={summaryLoading} />
-                <TrendsChart data={results.trends} query={query} spikeData={spikeData} />
-                <SpikeInsights spikes={spikeData} loading={spikeLoading} />
+                <TrendsChart data={results.trends} query={query} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
                 <div className="grid gap-6 lg:grid-cols-2">
