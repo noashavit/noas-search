@@ -4,6 +4,7 @@ import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TrendsChart } from "@/components/TrendsChart";
+import { SpikeInsights } from "@/components/SpikeInsights";
 import { RelatedQueries } from "@/components/RelatedQueries";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
