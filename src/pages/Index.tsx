@@ -19,7 +19,7 @@ type SearchType = "topic" | "person";
 const Index = () => {
   const [query, setQuery] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("topic");
-  const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
+  const { results, loading, search, summary, summaryLoading, spikeData, spikeLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
 
   const handleToggleSearchType = (type: SearchType) => {
