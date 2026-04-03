@@ -1,4 +1,7 @@
-# Search Insights
+<img width="61.52" height="65.12" alt="icon" src="https://github.com/user-attachments/assets/7efd1558-963c-4b7b-b457-67e136ce86ca" />
+
+# Search Insights 
+
 
 **Real-time research on any topic or person — search trends, top results, and live LinkedIn posts in one dashboard.**
 
