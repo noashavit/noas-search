@@ -85,6 +85,8 @@ export function useSearch() {
   const search = async (query: string, apiKey?: string, searchType: string = "topic") => {
     setLoading(true);
     setSummary(null);
+    setSpikeData([]);
+    setSpikeLoading(false);
     try {
       const { data, error } = await supabase.functions.invoke("search", {
         body: { query, apiKey, searchType },
