@@ -3,7 +3,7 @@
 # Search Insights 
 
 
-**Real-time research on any topic or person — search trends, top results, and live LinkedIn posts in one dashboard.**
+**Real-time research on any topic or person: search trends, top results, and live LinkedIn posts in one dashboard.**
 
 🔗 **[Live app →](https://noas-search.lovable.app)**
 
@@ -11,24 +11,25 @@
 
 ## What it does
 
-Research is fragmented by default. Google Trends in one tab, LinkedIn in another, search results in a third — then a manual summary on top of it all.
+Research is fragmented by default. Google Trends in one tab, LinkedIn in another, search results in a third, then a manual summary on top of it all.
 
 Search Insights collapses that into a single query. Type a topic or a person's name and get back four things simultaneously:
 
-- **AI analyst briefing** — a structured synthesis covering what the term is, how interest is trending, what people are saying about it right now, and the single most important signal
-- **Google Trends chart** — 12 months of US search interest
-- **Top 10 Google results** — the highest-authority sources currently defining the topic
-- **Live LinkedIn posts** — the 10 most recent posts mentioning the topic, or authored by the person
+- **AI analyst briefing**: A structured synthesis covering what the term is, how interest is trending, what people are saying about it right now, and the single most important signal
+- **Google Trends chart**: 12 months of US search interest
+- **Top and Rising queries**: In the US for in the past 12 months
+- **Top 10 Google results**: The highest-authority sources currently defining the topic
+- **Live LinkedIn posts**: The 10 most recent LinkedIn posts about the topic, or authored by the person
 
 ---
 
 ## Search modes
 
-**Topic Mode** — research any concept, technology, company, or trend. The LinkedIn feed surfaces who is actively talking about the topic right now: which voices are defining it, what angles they're taking, how the framing is evolving.
+**Topic Mode**: Research any concept, technology, company, or trend. The LinkedIn feed surfaces who is actively talking about the topic right now: which voices are defining it, what angles they're taking, how the framing is evolving.
 
-**Person Mode** — research a specific individual. Instead of posts that mention them, it pulls posts they authored — their actual LinkedIn feed, surfaced directly. Useful before meetings, outreach, or conference prep.
+**Person Mode**: Research a specific individual. See how they appear in search and LinkedIn. Instead of posts that mention them, it pulls the most recent posts they authored, surfaced directly. Useful before meetings, outreach, or conference prep.
 
-The distinction matters. In Person Mode you're not reading *about* someone. You're reading what they've been publishing this week.
+In Person Mode you're not reading *about* someone. You're reading what they've been publishing this week.
 
 ---
 
@@ -39,7 +40,7 @@ The distinction matters. In Person Mode you're not reading *about* someone. You'
 3. Choose **Topic** or **Person** mode
 4. Search
 
-**On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. A free SerpAPI tier is available at [serpapi.com](https://serpapi.com) — no credit card required to start.
+**On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. A free SerpAPI tier is available at [serpapi.com](https://serpapi.com).  
 
 ---
 
