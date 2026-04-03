@@ -80,4 +80,4 @@ You'll need a SerpAPI key to run searches. Enter it in the UI when prompted — 
 
 ## Built by
 
-[Noa Shavit](https://www.linkedin.com/in/noashavit): Product marketer and AI builder based in San Francisco.
+[Noa Shavit](https://www.linkedin.com/in/noashavit) — product marketer and AI builder based in San Francisco.
