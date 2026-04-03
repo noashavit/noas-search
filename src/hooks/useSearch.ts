@@ -158,7 +158,8 @@ export function useSearch() {
   const clearResults = () => {
     setResults(null);
     setSummary(null);
+    setSpikeData([]);
   };
 
-  return { results, loading, search, history, loadHistory, summary, summaryLoading, clearResults };
+  return { results, loading, search, history, loadHistory, summary, summaryLoading, spikeData, spikeLoading, clearResults };
 }
