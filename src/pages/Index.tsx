@@ -98,7 +98,7 @@ const Index = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                  className="pl-14 h-16 text-base sm:text-xl bg-card border-border/50"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
@@ -151,7 +151,7 @@ const Index = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                  className="pl-14 h-16 text-base sm:text-xl bg-card border-border/50"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">

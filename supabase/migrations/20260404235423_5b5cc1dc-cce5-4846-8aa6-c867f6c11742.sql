@@ -1,0 +1,1 @@
+ALTER TABLE public.searches ADD COLUMN IF NOT EXISTS related_queries jsonb;
