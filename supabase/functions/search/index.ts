@@ -187,16 +187,13 @@ serve(async (req) => {
       relatedQueries: { top: relatedTop, rising: relatedRising },
     };
 
-    // Save to database
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
+    // Save to database (supabase client already created above)
     await supabase.from("searches").insert({
       query,
       results: results.google,
       trends_data: results.trends,
       linkedin_posts: results.linkedin,
+      related_queries: results.relatedQueries,
       search_type: searchType,
     });
 
