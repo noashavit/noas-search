@@ -11,7 +11,9 @@
 
 ## What it does
 
-The app helps you do two things:
+Prototype research tool built through AI experimentation. 
+
+The prototype helps you do two things:
 1. Get a high-level understanding of a Topic: Search trends, queries, top 10 results, recent LinkedIn posts, and AI summary.
 2. Resources to learn more about any Topic or Person: A short list of the most relevant and recent links.
 
