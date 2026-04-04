@@ -1,9 +1,9 @@
 <img width="61.52" height="65.12" alt="icon" src="https://github.com/user-attachments/assets/7efd1558-963c-4b7b-b457-67e136ce86ca" />
 
-# Search Insights 
+# Search insights app
 
 
-**Real-time research on any topic or person — search trends, top results, and live LinkedIn posts in one dashboard.**
+**Real-time research on any Topic or Person. Search Trends, rising queires, top results, and most relevant LinkedIn activity in one dashboard.**
 
 🔗 **[Live app →](https://noas-search.lovable.app)**
 
@@ -11,24 +11,26 @@
 
 ## What it does
 
-Research is fragmented by default. Google Trends in one tab, LinkedIn in another, search results in a third — then a manual summary on top of it all.
+This app aim to help you do two things:
+1. Get a high-level understanding of a Topic: Search trends, queries, top 10 results, recent LinkedIn posts, and AI summary.
+2. Resources to learn more about any Topic or Person: A short list of the most relevant and recent links.
 
-Search Insights collapses that into a single query. Type a topic or a person's name and get back four things simultaneously:
+Type in a Topic or a Person to get back:
 
-- **AI analyst briefing** — a structured synthesis covering what the term is, how interest is trending, what people are saying about it right now, and the single most important signal
-- **Google Trends chart** — 12 months of US search interest
-- **Top 10 Google results** — the highest-authority sources currently defining the topic
-- **Live LinkedIn posts** — the 10 most recent posts mentioning the topic, or authored by the person
+- **AI analyst briefing**: A structured synthesis covering what the term is, how interest is trending, what people are saying about it right now, and the single most important signal
+- **Google Trends**: 12 months of US search interest, top queries, and rising queries. 
+- **Top 10 Google results**: The highest-authority sources currently defining the Topic or Person
+- **Live LinkedIn posts**: The 10 most recent posts mentioning the Topic, or authored by the Person
 
 ---
 
 ## Search modes
 
-**Topic Mode** — research any concept, technology, company, or trend. The LinkedIn feed surfaces who is actively talking about the topic right now: which voices are defining it, what angles they're taking, how the framing is evolving.
+**Topic Mode**: Research any concept, technology, or trend. See search trends, top and rising queries, top 10 search results, and the most recent Linkedin activity. The LinkedIn feed surfaces the people that are actively talking about the Topic: which voices are defining it, what angles they're taking, and how the framing is evolving.
 
-**Person Mode** — research a specific individual. Instead of posts that mention them, it pulls posts they authored — their actual LinkedIn feed, surfaced directly. Useful before meetings, outreach, or conference prep.
+**Person Mode**: Learn more about the people shaping the industry. What they are known for and what they are currently thinking about. Here the LinkedIn feed surfaces the most recent posts they have written. Useful before meetings, outreach, or conference prep.
 
-The distinction matters. In Person Mode you're not reading *about* someone. You're reading what they've been publishing this week.
+In Person Mode you're not reading *about* someone. You're reading what they've been publishing this week.
 
 ---
 
@@ -39,7 +41,8 @@ The distinction matters. In Person Mode you're not reading *about* someone. You'
 3. Choose **Topic** or **Person** mode
 4. Search
 
-**On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. A free SerpAPI tier is available at [serpapi.com](https://serpapi.com) — no credit card required to start.
+**On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. 
+A free SerpAPI tier is available at [serpapi.com](https://serpapi.com) 
 
 ---
 
@@ -47,9 +50,13 @@ The distinction matters. In Person Mode you're not reading *about* someone. You'
 
 Built as a React + Vite single-page app, deployed via Lovable.
 
-All external data — Google Search results, Google Trends, and LinkedIn posts — is fetched through SerpAPI, which provides a single clean interface across all three sources. The AI analyst briefing is generated server-side and synthesizes all data sources into a structured narrative on each query.
+Data is fetched through SerpAPI, which provides a single clean interface across all three sources. 
+The AI analyst briefing is generated server-side and synthesizes all data sources into a structured narrative.
 
-The SerpAPI key is the only credential the app requires from the user. It is passed at runtime, kept in session memory only, and never written to any server or storage layer.
+The SerpAPI key is the only credential the app requires. 
+It is passed at runtime, kept in session memory only, and never written to any server or storage layer.
+
+The app will technically function without a valid SerpAPI key, but it will not return any results. 
 
 ---
 
@@ -74,10 +81,10 @@ npm install
 npm run dev
 ```
 
-You'll need a SerpAPI key to run searches. Enter it in the UI when prompted — no `.env` file required.
+You'll need a SerpAPI key to get results for your searches. 
 
 ---
 
 ## Built by
 
-[Noa Shavit](https://www.linkedin.com/in/noashavit) — product marketer and AI builder based in San Francisco.
+[Noa Shavit](https://www.linkedin.com/in/noashavit), product marketer and AI builder based in San Francisco.
