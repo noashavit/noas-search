@@ -3,7 +3,7 @@
 # Search insights app
 
 
-**Real-time research on any Topic or Person. Search Trends, rising queires, top results, and most relevant LinkedIn activity in one dashboard.**
+**Real-time research on any Topic or Person. Search Trends, rising queries, top results, and most relevant LinkedIn activity in one dashboard.**
 
 🔗 **[Live app →](https://noas-search.lovable.app)**
 
@@ -11,7 +11,7 @@
 
 ## What it does
 
-This app aim to help you do two things:
+The app helps you do two things:
 1. Get a high-level understanding of a Topic: Search trends, queries, top 10 results, recent LinkedIn posts, and AI summary.
 2. Resources to learn more about any Topic or Person: A short list of the most relevant and recent links.
 
@@ -26,7 +26,7 @@ Type in a Topic or a Person to get back:
 
 ## Search modes
 
-**Topic Mode**: Research any concept, technology, or trend. See search trends, top and rising queries, top 10 search results, and the most recent Linkedin activity. The LinkedIn feed surfaces the people that are actively talking about the Topic: which voices are defining it, what angles they're taking, and how the framing is evolving.
+**Topic Mode**: Research any concept, technology, or trend. See search trends, top and rising queries, top 10 search results, and the most recent LinkedIn activity. The LinkedIn feed surfaces the people that are actively talking about the Topic: which voices are defining it, what angles they're taking, and how the framing is evolving.
 
 **Person Mode**: Learn more about the people shaping the industry. What they are known for and what they are currently thinking about. Here the LinkedIn feed surfaces the most recent posts they have written. Useful before meetings, outreach, or conference prep.
 
@@ -56,7 +56,7 @@ The AI analyst briefing is generated server-side and synthesizes all data source
 The SerpAPI key is the only credential the app requires. 
 It is passed at runtime, kept in session memory only, and never written to any server or storage layer.
 
-The app will technically function without a valid SerpAPI key, but it will not return any results. 
+The app will load without a valid SerpAPI key, but it will not return any results. 
 
 ---
 
