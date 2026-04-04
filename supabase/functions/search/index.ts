@@ -27,6 +27,34 @@ serve(async (req) => {
       throw new Error("No SerpAPI key provided");
     }
 
+    // Check for cached results (same query + type within last 10 minutes)
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const { data: cached } = await supabase
+      .from("searches")
+      .select("results, trends_data, linkedin_posts, related_queries")
+      .eq("query", query)
+      .eq("search_type", searchType)
+      .gte("created_at", tenMinAgo)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (cached && cached.results && (cached.trends_data as any[])?.length > 0) {
+      console.log("Returning cached results for:", query);
+      return new Response(JSON.stringify({
+        google: cached.results,
+        trends: cached.trends_data,
+        linkedin: cached.linkedin_posts || [],
+        relatedQueries: cached.related_queries || { top: [], rising: [] },
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Fetch Google + Trends in parallel, then LinkedIn with recency fallback
     const [googleResults, trendsData, relatedQueriesData] = await Promise.all([
       fetch(
