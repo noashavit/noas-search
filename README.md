@@ -2,12 +2,11 @@
 
 # Search insights app
 
+
 **Real-time research on any Topic or Person. Search Trends, rising queries, top results, and most relevant LinkedIn activity in one dashboard.**
 
 🔗 **[Live app →](https://noas-search.lovable.app)**
 
-
-> ⚠️ **Prototype.** This is a personal tool built to experiment with coding assistants, not production software. 
 ---
 
 ## What it does
@@ -91,4 +90,3 @@ You'll need a SerpAPI key to get results for your searches.
 ## Built by
 
 [Noa Shavit](https://www.linkedin.com/in/noashavit), product marketer and AI builder based in San Francisco.
-
