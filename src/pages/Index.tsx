@@ -92,13 +92,13 @@ const Index = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl w-full">
-              <div className="relative flex-1">
+              <div className="relative flex-1 opacity-100 font-semibold text-sm text-inherit">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                  className="pl-14 h-16 bg-card border-border/50 opacity-90 text-sm"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
