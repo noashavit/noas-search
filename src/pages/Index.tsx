@@ -150,8 +150,8 @@ const Index = () => {
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50"
+                  placeholder={searchType === "person" ? "Enter a person's name…" : "Search anything"}
+                  className="pl-14 h-16 text-xl bg-card border-border/50 font-semibold opacity-90 px-[5px]"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
