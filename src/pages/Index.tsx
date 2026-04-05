@@ -62,7 +62,7 @@ const Index = () => {
         {!results && !loading && (
           <div className="flex-1 flex-col gap-6 py-12 flex items-center justify-start">
             <h2 className="text-3xl font-bold tracking-tight text-foreground mt-[100px]">
-              Search anything
+              Start researching!
             </h2>
 
             {/* Search Type Toggle */}
