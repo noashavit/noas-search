@@ -24,6 +24,10 @@ Type in a Topic or a Person to get back:
 - **Top 10 Google results**: The highest-authority sources currently defining the Topic or Person
 - **Live LinkedIn posts**: The 10 most recent posts mentioning the Topic, or authored by the Person
 
+See it in action below!
+
+https://github.com/user-attachments/assets/47cbb41c-d3ed-4dec-a355-166741c80bb6
+
 ---
 
 ## Search modes
