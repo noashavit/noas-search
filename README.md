@@ -1,4 +1,4 @@
-<img width="61.52" height="65.12" alt="icon" src="https://github.com/user-attachments/assets/7efd1558-963c-4b7b-b457-67e136ce86ca" />
+<img width="80" height="80" alt="noas-icon" src="https://github.com/user-attachments/assets/e71f9c41-a674-4fed-8676-d6704529d2b4" />
 
 # Search insights app
 
