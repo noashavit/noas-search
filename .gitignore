@@ -11,14 +11,25 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Environment / secrets — never commit real keys
 .env
+.env.*
+*.env
 local*
+
+# macOS metadata
+.DS_Store
+.AppleDouble
+
+# Claude Code local config
+.claude/settings.local.json
+.claude/launch.json
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
