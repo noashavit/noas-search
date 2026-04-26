@@ -20,6 +20,7 @@ export type Database = {
           id: string
           linkedin_posts: Json | null
           query: string
+          related_queries: Json | null
           results: Json | null
           search_type: string
           trends_data: Json | null
@@ -29,6 +30,7 @@ export type Database = {
           id?: string
           linkedin_posts?: Json | null
           query: string
+          related_queries?: Json | null
           results?: Json | null
           search_type?: string
           trends_data?: Json | null
@@ -38,6 +40,7 @@ export type Database = {
           id?: string
           linkedin_posts?: Json | null
           query?: string
+          related_queries?: Json | null
           results?: Json | null
           search_type?: string
           trends_data?: Json | null
