@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
 import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,6 @@ import { TrendsChart } from "@/components/TrendsChart";
 import { RelatedQueries } from "@/components/RelatedQueries";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
-import { ShareResults } from "@/components/ShareResults";
 
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
 import { AnalystSummary } from "@/components/AnalystSummary";
@@ -21,7 +20,6 @@ const Index = () => {
   const [searchType, setSearchType] = useState<SearchType>("topic");
   const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
-  const resultsRef = useRef<HTMLDivElement>(null);
 
   const handleToggleSearchType = (type: SearchType) => {
     if (type !== searchType) {
@@ -64,7 +62,7 @@ const Index = () => {
         {!results && !loading && (
           <div className="flex-1 flex-col gap-6 py-12 flex items-center justify-start">
             <h2 className="text-3xl font-bold tracking-tight text-foreground mt-[100px]">
-              Start researching!
+              Search anything
             </h2>
 
             {/* Search Type Toggle */}
@@ -99,8 +97,8 @@ const Index = () => {
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={searchType === "person" ? "Enter a person's name…" : "Search anything"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50 font-semibold opacity-90 px-[5px]"
+                  placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
+                  className="pl-14 h-16 text-xl bg-card border-border/50"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
@@ -144,11 +142,6 @@ const Index = () => {
                 <User className="h-4 w-4" />
                 Person
               </button>
-              {results && !loading && (
-                <div className="ml-auto">
-                  <ShareResults targetRef={resultsRef} query={query} />
-                </div>
-              )}
             </div>
 
             <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl mx-auto w-full">
@@ -157,8 +150,8 @@ const Index = () => {
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={searchType === "person" ? "Enter a person's name…" : "Search anything"}
-                  className="pl-14 h-16 text-xl bg-card border-border/50 font-semibold opacity-90 px-[5px]"
+                  placeholder={searchType === "person" ? "Enter a person's name…" : "What do you want to learn about?"}
+                  className="pl-14 h-16 text-xl bg-card border-border/50"
                 />
               </div>
               <Button type="submit" disabled={loading || !query.trim()} className="h-16 px-10 text-lg">
@@ -169,7 +162,7 @@ const Index = () => {
             {loading && <SearchProgress />}
 
             {results && !loading && (
-              <div ref={resultsRef} className="space-y-6 bg-background">
+              <div className="space-y-6">
                 <AnalystSummary summary={summary} loading={summaryLoading} />
                 <TrendsChart data={results.trends} query={query} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
