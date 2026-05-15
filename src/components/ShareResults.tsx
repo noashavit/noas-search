@@ -46,10 +46,10 @@ export function ShareResults({ targetRef, query }: Props) {
 
   const Icon = busy ? Loader2 : shareMode ? Share2 : Download;
   const label = busy
-    ? "Preparing PDF…"
+    ? "Preparing…"
     : shareMode
       ? "Share"
-      : "Export PDF";
+      : "Export";
 
   return (
     <Button
