@@ -173,9 +173,10 @@ const Index = () => {
                 <TrendsChart data={results.trends} query={query} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <GoogleResults results={results.google} />
-                  <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <GoogleResults results={results.google} />
+                    <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
+                  </div>
                 </div>
               </div>
             )}
