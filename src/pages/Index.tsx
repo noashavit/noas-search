@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Search, Loader2, Sparkles, KeyRound, User, BookOpen } from "lucide-react";
 import { SearchProgress } from "@/components/SearchProgress";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { TrendsChart } from "@/components/TrendsChart";
 import { RelatedQueries } from "@/components/RelatedQueries";
 import { GoogleResults } from "@/components/GoogleResults";
 import { LinkedInPosts } from "@/components/LinkedInPosts";
+import { ShareResults } from "@/components/ShareResults";
 
 import { ApiKeyDialog } from "@/components/ApiKeyDialog";
 import { AnalystSummary } from "@/components/AnalystSummary";
@@ -20,6 +21,7 @@ const Index = () => {
   const [searchType, setSearchType] = useState<SearchType>("topic");
   const { results, loading, search, summary, summaryLoading, clearResults } = useSearch();
   const { apiKey, setApiKey, clearApiKey, hasApiKey } = useApiKey();
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const handleToggleSearchType = (type: SearchType) => {
     if (type !== searchType) {
@@ -163,7 +165,11 @@ const Index = () => {
 
             {results && !loading && (
               <div className="space-y-6">
-                <AnalystSummary summary={summary} loading={summaryLoading} />
+                <div className="flex justify-end">
+                  <ShareResults targetRef={resultsRef} query={query} />
+                </div>
+                <div ref={resultsRef} className="space-y-6 bg-background">
+                  <AnalystSummary summary={summary} loading={summaryLoading} />
                 <TrendsChart data={results.trends} query={query} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
