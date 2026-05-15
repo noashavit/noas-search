@@ -120,7 +120,7 @@ const Index = () => {
         {/* Search bar + results/loading */}
         {(results || loading) && (
           <div className="py-8 space-y-6">
-            {/* Search Type Toggle */}
+            {/* Search Type Toggle + Export */}
             <div className="flex items-center gap-2 max-w-3xl mx-auto w-full">
               <button
                 onClick={() => handleToggleSearchType("topic")}
@@ -144,6 +144,11 @@ const Index = () => {
                 <User className="h-4 w-4" />
                 Person
               </button>
+              {results && !loading && (
+                <div className="ml-auto">
+                  <ShareResults targetRef={resultsRef} query={query} />
+                </div>
+              )}
             </div>
 
             <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl mx-auto w-full">
@@ -164,19 +169,14 @@ const Index = () => {
             {loading && <SearchProgress />}
 
             {results && !loading && (
-              <div className="space-y-6">
-                <div className="flex justify-end">
-                  <ShareResults targetRef={resultsRef} query={query} />
-                </div>
-                <div ref={resultsRef} className="space-y-6 bg-background">
-                  <AnalystSummary summary={summary} loading={summaryLoading} />
+              <div ref={resultsRef} className="space-y-6 bg-background">
+                <AnalystSummary summary={summary} loading={summaryLoading} />
                 <TrendsChart data={results.trends} query={query} />
                 {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
 
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <GoogleResults results={results.google} />
-                    <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
-                  </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <GoogleResults results={results.google} />
+                  <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
                 </div>
               </div>
             )}
