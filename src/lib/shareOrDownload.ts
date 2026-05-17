@@ -2,6 +2,11 @@ import { triggerDownload } from "./exportPdf";
 
 export type ShareResult = "shared" | "downloaded" | "cancelled";
 
+function isMobile(): boolean {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+}
+
 export async function shareOrDownloadPdf(
   blob: Blob,
   filename: string,
@@ -12,7 +17,7 @@ export async function shareOrDownloadPdf(
     canShare?: (data: ShareData) => boolean;
   };
 
-  if (nav.canShare?.({ files: [file] }) && nav.share) {
+  if (isMobile() && nav.canShare?.({ files: [file] }) && nav.share) {
     try {
       await nav.share({ files: [file], title: meta.title, text: meta.text });
       return "shared";
@@ -26,6 +31,7 @@ export async function shareOrDownloadPdf(
 }
 
 export function canShareFiles(): boolean {
+  if (!isMobile()) return false;
   const nav = navigator as Navigator & {
     canShare?: (data: ShareData) => boolean;
   };
