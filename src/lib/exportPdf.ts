@@ -1,3 +1,5 @@
+import type jsPDFType from "jspdf";
+
 export function slugify(input: string): string {
   return (
     input
@@ -94,7 +96,7 @@ export async function generateResultsPdf(element: HTMLElement): Promise<Blob> {
 }
 
 function addLinksForPage(
-  pdf: any,
+  pdf: InstanceType<typeof jsPDFType>,
   links: LinkRect[],
   scale: number,
   pageOffsetPt: number,
