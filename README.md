@@ -23,6 +23,7 @@ Type in a Topic or a Person to get back:
 - **Google Trends**: 12 months of US search interest, top queries, and rising queries. 
 - **Top 10 Google results**: The highest-authority sources currently defining the Topic or Person
 - **Live LinkedIn posts**: The 10 most recent posts mentioning the Topic, or authored by the Person
+- **Downloadable PDF**: Export the full report as a shareable PDF, with header, trends, results, and LinkedIn posts laid out cleanly across pages
 
 See it in action below!
 
@@ -46,6 +47,7 @@ In Person Mode you're not reading *about* someone. You're reading what they've b
 2. Enter your SerpAPI key when prompted
 3. Choose **Topic** or **Person** mode
 4. Search
+5. Use the **Share** or **Export** button above the results to download the report as a PDF
 
 **On the API key:** it's entered at runtime in the UI and never stored server-side. You'll need to re-enter it each session. 
 A free SerpAPI tier is available at [serpapi.com](https://serpapi.com) 
