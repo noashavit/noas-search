@@ -23,7 +23,7 @@ export function ShareResults({ targetRef, query }: Props) {
     if (!targetRef.current || busy) return;
     setBusy(true);
     try {
-      const blob = await generateResultsPdf(targetRef.current);
+      const blob = await generateResultsPdf(targetRef.current, query);
       const filename = pdfFilename(query);
       const result = await shareOrDownloadPdf(blob, filename, {
         title: `Search Insights: ${query}`,

@@ -169,12 +169,20 @@ const Index = () => {
             {loading && <SearchProgress />}
 
             {results && !loading && (
-              <div ref={resultsRef} className="space-y-6">
-                <AnalystSummary summary={summary} loading={summaryLoading} />
-                <TrendsChart data={results.trends} query={query} />
-                {results.relatedQueries && <RelatedQueries data={results.relatedQueries} />}
+              <div ref={resultsRef} className="space-y-6 bg-background">
+                <div data-pdf-card>
+                  <AnalystSummary summary={summary} loading={summaryLoading} />
+                </div>
+                <div data-pdf-card>
+                  <TrendsChart data={results.trends} query={query} />
+                </div>
+                {results.relatedQueries && (
+                  <div data-pdf-card>
+                    <RelatedQueries data={results.relatedQueries} />
+                  </div>
+                )}
 
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div data-pdf-card className="grid gap-6 lg:grid-cols-2">
                   <GoogleResults results={results.google} />
                   <LinkedInPosts posts={results.linkedin} query={query} searchType={searchType} />
                 </div>
